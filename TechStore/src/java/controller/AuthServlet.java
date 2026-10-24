@@ -26,7 +26,16 @@ public class AuthServlet extends HttpServlet{
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+            //cau hinh utf-8 de doc duoc tineg viet tu ten, ho ten
+            req.setCharacterEncoding("UTF-8");
+            resp.setCharacterEncoding("UTF-8");
+            
+            String action = req.getParameter("action");
+            if("login".equals(action)) {
+                handleLogin(req, resp);
+            } else if("register".equals(action)) {
+                handleRegister(req, resp);
+            }
     }
 
     @Override
