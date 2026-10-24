@@ -31,7 +31,16 @@ public class AuthServlet extends HttpServlet{
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        String action = req.getParameter("action");
+        if("logout".equals(action)) {
+            HttpSession session = req.getSession(false); // khong tao session moi neu chua co
+            if(session != null) {
+                session.invalidate();//xoa toan bo du lieu trong session
+            }
+            resp.sendRedirect(req.getContextPath() + "/logout.jsp");
+        } else {
+            resp.sendRedirect(req.getContextPath() + "/");
+        }
     }
     
     
