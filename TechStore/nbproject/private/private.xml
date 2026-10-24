@@ -3,11 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/School/Semester4/PRJ301/Project_PRJ301/TechStore/web/WEB-INF/views/admin/products.jsp</file>
-            <file>file:/D:/School/Semester4/PRJ301/Project_PRJ301/TechStore/web/WEB-INF/views/admin/product-form.jsp</file>
-            <file>file:/D:/School/Semester4/PRJ301/Project_PRJ301/TechStore/web/WEB-INF/views/admin/users.jsp</file>
-            <file>file:/D:/School/Semester4/PRJ301/Project_PRJ301/TechStore/web/WEB-INF/views/admin/dashboard.jsp</file>
-            <file>file:/D:/School/Semester4/PRJ301/Project_PRJ301/TechStore/web/WEB-INF/views/admin/orders.jsp</file>
+            <file>file:/D:/School/Semester4/PRJ301/Project_PRJ301/TechStore/src/java/dao/AccountDAO.java</file>
         </group>
     </open-files>
 </project-private>
