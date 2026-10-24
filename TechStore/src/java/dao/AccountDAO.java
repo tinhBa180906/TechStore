@@ -34,4 +34,19 @@ public class AccountDAO extends DBContext {
         }
         return null;
     }
+    
+    public boolean checkUsernameOrEmailExists(String name, String email) {
+        String sql = "SELECT 1 FROM dbo.UserAccount WHERE Username = ? OR Email = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, name);
+            st.setString(1, email);
+            try(ResultSet rs = st.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
 }
