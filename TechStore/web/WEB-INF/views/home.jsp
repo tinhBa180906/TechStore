@@ -1,18 +1,18 @@
 <%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%--
-    Presentation-only homepage. Static product names/prices come from the SQL seed,
-    not query results. ProductServlet currently has no data/URL contract.
-    Imagery: official Apple, Sony and Xiaomi HTTPS product image endpoints.
-    No SQL, DAO calls, authentication or commerce handlers belong in this view.
---%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<fmt:setLocale value="vi_VN" scope="page"/>
+<%-- ProductServlet supplies request-scoped catalog data; this view never accesses JDBC.
+     Product image URLs come from SQL. Hero/category imagery is illustrative only. --%>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Khám phá điện thoại, laptop, phụ kiện và màn hình tại TechStore. Bản xem trước giao diện dự án PRJ301.">
+    <meta name="description" content="Khám phá điện thoại, laptop, phụ kiện và màn hình tại TechStore. Danh sách sản phẩm được cập nhật từ TechStore.">
     <title>TechStore — Công nghệ cho cuộc sống</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/home.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body class="techstore-home" id="trang-chu">
     <svg class="ts-symbols" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
@@ -89,28 +89,28 @@
             <div><svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-bag"></use></svg><span>Thanh toán COD</span></div>
         </div>
         <nav class="ts-quick-categories" aria-label="Khám phá nhanh danh mục">
-            <a href="#dien-thoai"><span class="ts-media "><img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-pro-max-bluetitanium-select?wid=500&amp;hei=500&amp;fmt=png-alpha" alt="Điện thoại" width="500" height="500" loading="lazy" decoding="async"><span class="ts-image-fallback" hidden><svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-image"></use></svg><span>Ảnh đang cập nhật</span></span></span><span><strong>Điện thoại</strong><small>Khám phá <svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-arrow"></use></svg></small></span></a>
-            <a href="#laptop"><span class="ts-media "><img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/macbook-air-midnight-gallery1-20220606?wid=800&amp;hei=616&amp;fmt=png-alpha" alt="Laptop" width="500" height="500" loading="lazy" decoding="async"><span class="ts-image-fallback" hidden><svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-image"></use></svg><span>Ảnh đang cập nhật</span></span></span><span><strong>Laptop</strong><small>Khám phá <svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-arrow"></use></svg></small></span></a>
-            <a href="#phu-kien"><span class="ts-media "><img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MTJV3?wid=400&amp;hei=400&amp;fmt=png-alpha" alt="Phụ kiện" width="500" height="500" loading="lazy" decoding="async"><span class="ts-image-fallback" hidden><svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-image"></use></svg><span>Ảnh đang cập nhật</span></span></span><span><strong>Phụ kiện</strong><small>Khám phá <svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-arrow"></use></svg></small></span></a>
-            <a href="#man-hinh"><span class="ts-media "><img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/studio-display-gallery-1-202203?wid=600&amp;hei=600&amp;fmt=png-alpha" alt="Màn hình" width="500" height="500" loading="lazy" decoding="async"><span class="ts-image-fallback" hidden><svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-image"></use></svg><span>Ảnh đang cập nhật</span></span></span><span><strong>Màn hình</strong><small>Khám phá <svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-arrow"></use></svg></small></span></a>
+            <a href="#danh-sach"><span class="ts-media "><img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-pro-max-bluetitanium-select?wid=500&amp;hei=500&amp;fmt=png-alpha" alt="Điện thoại" width="500" height="500" loading="lazy" decoding="async"><span class="ts-image-fallback" hidden><svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-image"></use></svg><span>Ảnh đang cập nhật</span></span></span><span><strong>Điện thoại</strong><small>Khám phá <svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-arrow"></use></svg></small></span></a>
+            <a href="#danh-sach"><span class="ts-media "><img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/macbook-air-midnight-gallery1-20220606?wid=800&amp;hei=616&amp;fmt=png-alpha" alt="Laptop" width="500" height="500" loading="lazy" decoding="async"><span class="ts-image-fallback" hidden><svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-image"></use></svg><span>Ảnh đang cập nhật</span></span></span><span><strong>Laptop</strong><small>Khám phá <svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-arrow"></use></svg></small></span></a>
+            <a href="#danh-sach"><span class="ts-media "><img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MTJV3?wid=400&amp;hei=400&amp;fmt=png-alpha" alt="Phụ kiện" width="500" height="500" loading="lazy" decoding="async"><span class="ts-image-fallback" hidden><svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-image"></use></svg><span>Ảnh đang cập nhật</span></span></span><span><strong>Phụ kiện</strong><small>Khám phá <svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-arrow"></use></svg></small></span></a>
+            <a href="#danh-sach"><span class="ts-media "><img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/studio-display-gallery-1-202203?wid=600&amp;hei=600&amp;fmt=png-alpha" alt="Màn hình" width="500" height="500" loading="lazy" decoding="async"><span class="ts-image-fallback" hidden><svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-image"></use></svg><span>Ảnh đang cập nhật</span></span></span><span><strong>Màn hình</strong><small>Khám phá <svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-arrow"></use></svg></small></span></a>
         </nav>
 
         <section class="ts-section ts-category-section" id="danh-muc" aria-labelledby="ts-categories-title">
             <div class="ts-section-heading"><h2 id="ts-categories-title">Danh mục phổ biến</h2><a class="ts-text-link" href="#danh-sach">Xem sản phẩm <svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-arrow"></use></svg></a></div>
             <div class="ts-category-grid">
-                <a class="ts-category-tile" href="#dien-thoai">
+                <a class="ts-category-tile" href="#danh-sach">
                     <span class="ts-media "><img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-pro-max-bluetitanium-select?wid=500&amp;hei=500&amp;fmt=png-alpha" alt="Điện thoại" width="500" height="500" loading="lazy" decoding="async"><span class="ts-image-fallback" hidden><svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-image"></use></svg><span>Ảnh đang cập nhật</span></span></span>
                     <span class="ts-category-caption"><span><strong>Điện thoại</strong><small>Kết nối mỗi ngày</small></span><svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-arrow"></use></svg></span>
                 </a>
-                <a class="ts-category-tile" href="#laptop">
+                <a class="ts-category-tile" href="#danh-sach">
                     <span class="ts-media "><img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/macbook-air-midnight-gallery1-20220606?wid=800&amp;hei=616&amp;fmt=png-alpha" alt="Laptop" width="500" height="500" loading="lazy" decoding="async"><span class="ts-image-fallback" hidden><svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-image"></use></svg><span>Ảnh đang cập nhật</span></span></span>
                     <span class="ts-category-caption"><span><strong>Laptop</strong><small>Làm việc & sáng tạo</small></span><svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-arrow"></use></svg></span>
                 </a>
-                <a class="ts-category-tile" href="#phu-kien">
+                <a class="ts-category-tile" href="#danh-sach">
                     <span class="ts-media "><img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MTJV3?wid=400&amp;hei=400&amp;fmt=png-alpha" alt="Phụ kiện" width="500" height="500" loading="lazy" decoding="async"><span class="ts-image-fallback" hidden><svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-image"></use></svg><span>Ảnh đang cập nhật</span></span></span>
                     <span class="ts-category-caption"><span><strong>Phụ kiện</strong><small>Trọn vẹn trải nghiệm</small></span><svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-arrow"></use></svg></span>
                 </a>
-                <a class="ts-category-tile" href="#man-hinh">
+                <a class="ts-category-tile" href="#danh-sach">
                     <span class="ts-media "><img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/studio-display-gallery-1-202203?wid=600&amp;hei=600&amp;fmt=png-alpha" alt="Màn hình" width="500" height="500" loading="lazy" decoding="async"><span class="ts-image-fallback" hidden><svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-image"></use></svg><span>Ảnh đang cập nhật</span></span></span>
                     <span class="ts-category-caption"><span><strong>Màn hình</strong><small>Mở rộng góc nhìn</small></span><svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-arrow"></use></svg></span>
                 </a>
@@ -118,135 +118,132 @@
         </section>
 
         <div id="san-pham" class="ts-products-area">
-            <p class="ts-preview-note"><svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-info"></use></svg>Bản xem trước giao diện · Sản phẩm và giá minh họa từ dữ liệu mẫu.</p>
+            <c:if test="${not empty dataLoadError}">
+                <section class="ts-data-error" role="alert" aria-labelledby="ts-data-error-title">
+                    <h2 id="ts-data-error-title">Chưa thể tải sản phẩm</h2>
+                    <p><c:out value="${dataLoadError}"/></p>
+                    <c:url var="retryUrl" value="/home"/>
+                    <a class="ts-button" href="<c:out value="${retryUrl}"/>#san-pham">Tải lại sản phẩm</a>
+                </section>
+            </c:if>
+            <c:if test="${empty dataLoadError}">
             <section class="ts-section" id="ban-chay" aria-labelledby="ts-bestsellers-title">
                 <div class="ts-section-heading">
-                    <div><h2 id="ts-bestsellers-title">Sản phẩm bán chạy</h2><p>Minh họa từ các đơn hàng mẫu đã hoàn thành.</p></div>
+                    <div><h2 id="ts-bestsellers-title">Sản phẩm bán chạy</h2><p>Được lựa chọn qua các đơn hàng đã hoàn thành.</p></div>
                     <a class="ts-text-link" href="#danh-sach">Xem tất cả <svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-arrow"></use></svg></a>
                 </div>
-                <div class="ts-product-grid ts-scroll-row" role="region" aria-label="Sản phẩm bán chạy, có thể cuộn ngang trên điện thoại" tabindex="0">
-                <article class="ts-product">
-                    <span class="ts-media "><img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-pro-max-bluetitanium-select?wid=500&amp;hei=500&amp;fmt=png-alpha" alt="iPhone 15 Pro Max 256GB" width="500" height="500" loading="lazy" decoding="async"><span class="ts-image-fallback" hidden><svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-image"></use></svg><span>Ảnh đang cập nhật</span></span></span>
-                    <div class="ts-product-body">
-                        <p class="ts-product-brand">Apple</p>
-                        <h3>iPhone 15 Pro Max 256GB</h3>
-                        <p class="ts-price">28.990.000 <span>₫</span></p>
-                    </div>
-                </article>
-                <article class="ts-product">
-                    <span class="ts-media "><img src="https://i02.appmifile.com/13_operatorx_operatorx_opx/11/01/2024/25da829b5997ff8aea28af388df3b8df.png" alt="Xiaomi Redmi Note 13 Pro" width="500" height="500" loading="lazy" decoding="async"><span class="ts-image-fallback" hidden><svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-image"></use></svg><span>Ảnh đang cập nhật</span></span></span>
-                    <div class="ts-product-body">
-                        <p class="ts-product-brand">Xiaomi</p>
-                        <h3>Xiaomi Redmi Note 13 Pro</h3>
-                        <p class="ts-price">7.990.000 <span>₫</span></p>
-                    </div>
-                </article>
-                <article class="ts-product">
-                    <span class="ts-media "><img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/macbook-air-midnight-gallery1-20220606?wid=800&amp;hei=616&amp;fmt=png-alpha" alt="MacBook Air M2 13 inch" width="500" height="500" loading="lazy" decoding="async"><span class="ts-image-fallback" hidden><svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-image"></use></svg><span>Ảnh đang cập nhật</span></span></span>
-                    <div class="ts-product-body">
-                        <p class="ts-product-brand">Apple</p>
-                        <h3>MacBook Air M2 13 inch</h3>
-                        <p class="ts-price">21.990.000 <span>₫</span></p>
-                    </div>
-                </article>
-                <article class="ts-product">
-                    <span class="ts-media "><img src="https://www.sony.jp/products/picture/WH-1000XM5.jpg" alt="Sony WH-1000XM5" width="500" height="500" loading="lazy" decoding="async"><span class="ts-image-fallback" hidden><svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-image"></use></svg><span>Ảnh đang cập nhật</span></span></span>
-                    <div class="ts-product-body">
-                        <p class="ts-product-brand">Sony</p>
-                        <h3>Sony WH-1000XM5</h3>
-                        <p class="ts-price">7.490.000 <span>₫</span></p>
-                    </div>
-                </article>
-                <article class="ts-product">
-                    <span class="ts-media "><img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MTJV3?wid=400&amp;hei=400&amp;fmt=png-alpha" alt="AirPods Pro 2 USB-C" width="500" height="500" loading="lazy" decoding="async"><span class="ts-image-fallback" hidden><svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-image"></use></svg><span>Ảnh đang cập nhật</span></span></span>
-                    <div class="ts-product-body">
-                        <p class="ts-product-brand">Apple</p>
-                        <h3>AirPods Pro 2 USB-C</h3>
-                        <p class="ts-price">5.490.000 <span>₫</span></p>
-                    </div>
-                </article>
-                <article class="ts-product">
-                    <span class="ts-media "><img src="https://i01.appmifile.com/v1/MI_18455B3E4DA706226CF7535A58E875F0267/pms_1678936383.60097709.png" alt="Xiaomi Power Bank 10000mAh" width="500" height="500" loading="lazy" decoding="async"><span class="ts-image-fallback" hidden><svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-image"></use></svg><span>Ảnh đang cập nhật</span></span></span>
-                    <div class="ts-product-body">
-                        <p class="ts-product-brand">Xiaomi</p>
-                        <h3>Xiaomi Power Bank 10000mAh</h3>
-                        <p class="ts-price">450.000 <span>₫</span></p>
-                    </div>
-                </article>
-                </div>
+                <c:choose>
+                    <c:when test="${not empty bestSellingProducts}">
+                        <div class="ts-product-grid ts-scroll-row" role="region" aria-label="Sản phẩm bán chạy, có thể cuộn ngang trên điện thoại" tabindex="0">
+                            <c:forEach var="product" items="${bestSellingProducts}">
+                    <article class="ts-product" data-product-id="<c:out value="${product.productId}"/>">
+                        <span class="ts-media">
+                            <c:set var="imagePath" value="${fn:trim(product.imageUrl)}"/>
+                            <c:set var="imageScheme" value="${fn:toLowerCase(imagePath)}"/>
+                            <c:choose>
+                                <c:when test="${not empty imagePath and (fn:startsWith(imageScheme, 'https://') or fn:startsWith(imageScheme, 'http://') or (not fn:contains(imagePath, ':') and not fn:startsWith(imagePath, '//')))}">
+                                    <c:url var="productImageUrl" value="${imagePath}"/>
+                                    <img src="<c:out value="${productImageUrl}"/>" alt="<c:out value="${product.productName}"/>" width="500" height="500" loading="lazy" decoding="async">
+                                    <span class="ts-image-fallback" hidden><svg class="ts-icon" aria-hidden="true" focusable="false"><use href="#ts-image"></use></svg><span>Ảnh đang cập nhật</span></span>
+                                </c:when>
+                                <c:otherwise>
+                                    <span class="ts-image-fallback"><svg class="ts-icon" aria-hidden="true" focusable="false"><use href="#ts-image"></use></svg><span>Ảnh đang cập nhật</span></span>
+                                </c:otherwise>
+                            </c:choose>
+                        </span>
+                        <div class="ts-product-body">
+                            <p class="ts-product-brand"><c:out value="${product.brandName}"/></p>
+                            <h3><c:out value="${product.productName}"/></h3>
+                            <p class="ts-price"><fmt:formatNumber value="${product.price}" type="currency" currencyCode="VND" minFractionDigits="0" maxFractionDigits="0"/></p>
+                        </div>
+                    </article>
+                            </c:forEach>
+                        </div>
+                    </c:when>
+                    <c:otherwise><p class="ts-empty-state">Chưa có sản phẩm bán chạy từ các đơn hàng đã hoàn thành.</p></c:otherwise>
+                </c:choose>
             </section>
             <section class="ts-section" id="noi-bat" aria-labelledby="ts-featured-title">
                 <div class="ts-section-heading">
                     <div><h2 id="ts-featured-title">Lựa chọn nổi bật</h2><p>Thiết bị cho những ý tưởng và trải nghiệm mới.</p></div>
                     <a class="ts-text-link" href="#danh-sach">Khám phá thêm <svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-arrow"></use></svg></a>
                 </div>
-                <div class="ts-featured-grid">
-                <article class="ts-product">
-                    <span class="ts-media "><img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/macbook-air-midnight-gallery1-20220606?wid=800&amp;hei=616&amp;fmt=png-alpha" alt="MacBook Air M2 13 inch" width="500" height="500" loading="lazy" decoding="async"><span class="ts-image-fallback" hidden><svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-image"></use></svg><span>Ảnh đang cập nhật</span></span></span>
-                    <div class="ts-product-body">
-                        <p class="ts-product-brand">Apple</p>
-                        <h3>MacBook Air M2 13 inch</h3>
-                        <p class="ts-price">21.990.000 <span>₫</span></p>
-                    </div>
-                </article>
-                <article class="ts-product">
-                    <span class="ts-media "><img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-pro-max-bluetitanium-select?wid=500&amp;hei=500&amp;fmt=png-alpha" alt="iPhone 15 Pro Max 256GB" width="500" height="500" loading="lazy" decoding="async"><span class="ts-image-fallback" hidden><svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-image"></use></svg><span>Ảnh đang cập nhật</span></span></span>
-                    <div class="ts-product-body">
-                        <p class="ts-product-brand">Apple</p>
-                        <h3>iPhone 15 Pro Max 256GB</h3>
-                        <p class="ts-price">28.990.000 <span>₫</span></p>
-                    </div>
-                </article>
-                <article class="ts-product">
-                    <span class="ts-media "><img src="https://www.sony.jp/products/picture/WH-1000XM5.jpg" alt="Sony WH-1000XM5" width="500" height="500" loading="lazy" decoding="async"><span class="ts-image-fallback" hidden><svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-image"></use></svg><span>Ảnh đang cập nhật</span></span></span>
-                    <div class="ts-product-body">
-                        <p class="ts-product-brand">Sony</p>
-                        <h3>Sony WH-1000XM5</h3>
-                        <p class="ts-price">7.490.000 <span>₫</span></p>
-                    </div>
-                </article>
-                </div>
+                <c:choose>
+                    <c:when test="${not empty featuredProducts}">
+                        <div class="ts-featured-grid">
+                            <c:forEach var="product" items="${featuredProducts}">
+                    <article class="ts-product" data-product-id="<c:out value="${product.productId}"/>">
+                        <span class="ts-media">
+                            <c:set var="imagePath" value="${fn:trim(product.imageUrl)}"/>
+                            <c:set var="imageScheme" value="${fn:toLowerCase(imagePath)}"/>
+                            <c:choose>
+                                <c:when test="${not empty imagePath and (fn:startsWith(imageScheme, 'https://') or fn:startsWith(imageScheme, 'http://') or (not fn:contains(imagePath, ':') and not fn:startsWith(imagePath, '//')))}">
+                                    <c:url var="productImageUrl" value="${imagePath}"/>
+                                    <img src="<c:out value="${productImageUrl}"/>" alt="<c:out value="${product.productName}"/>" width="500" height="500" loading="lazy" decoding="async">
+                                    <span class="ts-image-fallback" hidden><svg class="ts-icon" aria-hidden="true" focusable="false"><use href="#ts-image"></use></svg><span>Ảnh đang cập nhật</span></span>
+                                </c:when>
+                                <c:otherwise>
+                                    <span class="ts-image-fallback"><svg class="ts-icon" aria-hidden="true" focusable="false"><use href="#ts-image"></use></svg><span>Ảnh đang cập nhật</span></span>
+                                </c:otherwise>
+                            </c:choose>
+                        </span>
+                        <div class="ts-product-body">
+                            <p class="ts-product-brand"><c:out value="${product.brandName}"/></p>
+                            <h3><c:out value="${product.productName}"/></h3>
+                            <p class="ts-price"><fmt:formatNumber value="${product.price}" type="currency" currencyCode="VND" minFractionDigits="0" maxFractionDigits="0"/></p>
+                        </div>
+                    </article>
+                            </c:forEach>
+                        </div>
+                    </c:when>
+                    <c:otherwise><p class="ts-empty-state">Chưa có sản phẩm nổi bật.</p></c:otherwise>
+                </c:choose>
             </section>
             <section class="ts-section" id="moi-nhat" aria-labelledby="ts-newest-title">
                 <div class="ts-section-heading">
-                    <div><h2 id="ts-newest-title">Mới nhất</h2><p>Một số sản phẩm được thêm gần đây trong bộ sưu tập mẫu.</p></div>
+                    <div><h2 id="ts-newest-title">Mới nhất</h2><p>Các sản phẩm được thêm gần đây nhất.</p></div>
                     <a class="ts-text-link" href="#danh-sach">Xem bộ sưu tập <svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-arrow"></use></svg></a>
                 </div>
-                <div class="ts-newest-grid">
-                <article class="ts-product">
-                    <span class="ts-media "><img src="https://www.sony.jp/products/picture/WF-1000XM5.jpg" alt="Sony WF-1000XM5" width="500" height="500" loading="lazy" decoding="async"><span class="ts-image-fallback" hidden><svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-image"></use></svg><span>Ảnh đang cập nhật</span></span></span>
-                    <div class="ts-product-body">
-                        <p class="ts-product-brand">Sony</p>
-                        <h3>Sony WF-1000XM5</h3>
-                        <p class="ts-price">5.290.000 <span>₫</span></p>
-                    </div>
-                </article>
-                <article class="ts-product">
-                    <span class="ts-media "><img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MTJV3?wid=400&amp;hei=400&amp;fmt=png-alpha" alt="AirPods Pro 2 USB-C" width="500" height="500" loading="lazy" decoding="async"><span class="ts-image-fallback" hidden><svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-image"></use></svg><span>Ảnh đang cập nhật</span></span></span>
-                    <div class="ts-product-body">
-                        <p class="ts-product-brand">Apple</p>
-                        <h3>AirPods Pro 2 USB-C</h3>
-                        <p class="ts-price">5.490.000 <span>₫</span></p>
-                    </div>
-                </article>
-                <article class="ts-product">
-                    <span class="ts-media "><img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-ultramarine-select-202409?wid=500&amp;hei=500&amp;fmt=png-alpha" alt="iPhone 16 128GB" width="500" height="500" loading="lazy" decoding="async"><span class="ts-image-fallback" hidden><svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-image"></use></svg><span>Ảnh đang cập nhật</span></span></span>
-                    <div class="ts-product-body">
-                        <p class="ts-product-brand">Apple</p>
-                        <h3>iPhone 16 128GB</h3>
-                        <p class="ts-price">21.490.000 <span>₫</span></p>
-                    </div>
-                </article>
-                </div>
+                <c:choose>
+                    <c:when test="${not empty newProducts}">
+                        <div class="ts-newest-grid">
+                            <c:forEach var="product" items="${newProducts}">
+                    <article class="ts-product" data-product-id="<c:out value="${product.productId}"/>">
+                        <span class="ts-media">
+                            <c:set var="imagePath" value="${fn:trim(product.imageUrl)}"/>
+                            <c:set var="imageScheme" value="${fn:toLowerCase(imagePath)}"/>
+                            <c:choose>
+                                <c:when test="${not empty imagePath and (fn:startsWith(imageScheme, 'https://') or fn:startsWith(imageScheme, 'http://') or (not fn:contains(imagePath, ':') and not fn:startsWith(imagePath, '//')))}">
+                                    <c:url var="productImageUrl" value="${imagePath}"/>
+                                    <img src="<c:out value="${productImageUrl}"/>" alt="<c:out value="${product.productName}"/>" width="500" height="500" loading="lazy" decoding="async">
+                                    <span class="ts-image-fallback" hidden><svg class="ts-icon" aria-hidden="true" focusable="false"><use href="#ts-image"></use></svg><span>Ảnh đang cập nhật</span></span>
+                                </c:when>
+                                <c:otherwise>
+                                    <span class="ts-image-fallback"><svg class="ts-icon" aria-hidden="true" focusable="false"><use href="#ts-image"></use></svg><span>Ảnh đang cập nhật</span></span>
+                                </c:otherwise>
+                            </c:choose>
+                        </span>
+                        <div class="ts-product-body">
+                            <p class="ts-product-brand"><c:out value="${product.brandName}"/></p>
+                            <h3><c:out value="${product.productName}"/></h3>
+                            <p class="ts-price"><fmt:formatNumber value="${product.price}" type="currency" currencyCode="VND" minFractionDigits="0" maxFractionDigits="0"/></p>
+                        </div>
+                    </article>
+                            </c:forEach>
+                        </div>
+                    </c:when>
+                    <c:otherwise><p class="ts-empty-state">Chưa có sản phẩm mới đang được bán.</p></c:otherwise>
+                </c:choose>
             </section>
+            </c:if>
         </div>
 
         <section class="ts-section ts-catalog-section" id="danh-sach" aria-labelledby="ts-catalog-title">
             <div class="ts-section-heading">
                 <div><h2 id="ts-catalog-title">Khám phá sản phẩm</h2><p>Tìm thiết bị phù hợp với cách bạn sống và làm việc.</p></div>
-                <span class="ts-preview-label">Bộ sưu tập minh họa</span>
+                <c:if test="${empty dataLoadError}"><span class="ts-preview-label"><fmt:formatNumber value="${totalProducts}" maxFractionDigits="0"/> sản phẩm</span></c:if>
             </div>
-            <p class="ts-catalog-notice" id="ts-search-notice">Tìm kiếm, bộ lọc và phân trang chưa khả dụng trong bản xem trước.</p>
+            <p class="ts-catalog-notice" id="ts-search-notice">Tìm kiếm và bộ lọc chưa khả dụng. Bạn có thể xem sản phẩm theo từng trang bên dưới.</p>
             <fieldset class="ts-filters" disabled aria-describedby="ts-search-notice">
                 <legend class="ts-sr-only">Tìm kiếm và lọc sản phẩm — chưa khả dụng</legend>
                 <div class="ts-filter ts-filter-search"><label for="ts-search-input">Tên sản phẩm</label><div class="ts-input-icon"><svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-search"></use></svg><input id="ts-search-input" type="search" placeholder="Bạn đang tìm gì?"></div></div>
@@ -255,56 +252,75 @@
                 <div class="ts-filter"><label for="ts-price">Khoảng giá</label><select id="ts-price"><option>Tất cả mức giá</option><option>Dưới 10 triệu</option><option>10–20 triệu</option><option>Trên 20 triệu</option></select></div>
                 <div class="ts-filter"><label for="ts-sort">Sắp xếp</label><select id="ts-sort"><option>Mới nhất</option><option>Giá tăng dần</option><option>Giá giảm dần</option></select></div>
             </fieldset>
-            <div class="ts-product-grid ts-catalog-grid">
-                <article class="ts-product" id="dien-thoai">
-                    <span class="ts-media "><img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-14-blue-select-202209?wid=500&amp;hei=500&amp;fmt=png-alpha" alt="iPhone 14 128GB" width="500" height="500" loading="lazy" decoding="async"><span class="ts-image-fallback" hidden><svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-image"></use></svg><span>Ảnh đang cập nhật</span></span></span>
-                    <div class="ts-product-body">
-                        <p class="ts-product-brand">Apple</p>
-                        <h3>iPhone 14 128GB</h3>
-                        <p class="ts-price">14.990.000 <span>₫</span></p>
-                    </div>
-                </article>
-                <article class="ts-product" id="laptop">
-                    <span class="ts-media "><img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/macbook-air-midnight-gallery1-20220606?wid=800&amp;hei=616&amp;fmt=png-alpha" alt="MacBook Air M2 13 inch" width="500" height="500" loading="lazy" decoding="async"><span class="ts-image-fallback" hidden><svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-image"></use></svg><span>Ảnh đang cập nhật</span></span></span>
-                    <div class="ts-product-body">
-                        <p class="ts-product-brand">Apple</p>
-                        <h3>MacBook Air M2 13 inch</h3>
-                        <p class="ts-price">21.990.000 <span>₫</span></p>
-                    </div>
-                </article>
-                <article class="ts-product" id="phu-kien">
-                    <span class="ts-media "><img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MTJV3?wid=400&amp;hei=400&amp;fmt=png-alpha" alt="AirPods Pro 2 USB-C" width="500" height="500" loading="lazy" decoding="async"><span class="ts-image-fallback" hidden><svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-image"></use></svg><span>Ảnh đang cập nhật</span></span></span>
-                    <div class="ts-product-body">
-                        <p class="ts-product-brand">Apple</p>
-                        <h3>AirPods Pro 2 USB-C</h3>
-                        <p class="ts-price">5.490.000 <span>₫</span></p>
-                    </div>
-                </article>
-                <article class="ts-product" id="man-hinh">
-                    <span class="ts-media "><img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/studio-display-gallery-1-202203?wid=600&amp;hei=600&amp;fmt=png-alpha" alt="Apple Studio Display 27 inch" width="500" height="500" loading="lazy" decoding="async"><span class="ts-image-fallback" hidden><svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-image"></use></svg><span>Ảnh đang cập nhật</span></span></span>
-                    <div class="ts-product-body">
-                        <p class="ts-product-brand">Apple</p>
-                        <h3>Apple Studio Display 27 inch</h3>
-                        <p class="ts-price">37.990.000 <span>₫</span></p>
-                    </div>
-                </article>
-                <article class="ts-product">
-                    <span class="ts-media "><img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-ultramarine-select-202409?wid=500&amp;hei=500&amp;fmt=png-alpha" alt="iPhone 16 128GB" width="500" height="500" loading="lazy" decoding="async"><span class="ts-image-fallback" hidden><svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-image"></use></svg><span>Ảnh đang cập nhật</span></span></span>
-                    <div class="ts-product-body">
-                        <p class="ts-product-brand">Apple</p>
-                        <h3>iPhone 16 128GB</h3>
-                        <p class="ts-price">21.490.000 <span>₫</span></p>
-                    </div>
-                </article>
-                <article class="ts-product">
-                    <span class="ts-media "><img src="https://www.sony.jp/products/picture/WH-1000XM5.jpg" alt="Sony WH-1000XM5" width="500" height="500" loading="lazy" decoding="async"><span class="ts-image-fallback" hidden><svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-image"></use></svg><span>Ảnh đang cập nhật</span></span></span>
-                    <div class="ts-product-body">
-                        <p class="ts-product-brand">Sony</p>
-                        <h3>Sony WH-1000XM5</h3>
-                        <p class="ts-price">7.490.000 <span>₫</span></p>
-                    </div>
-                </article>
-            </div>
+            <c:choose>
+                <c:when test="${not empty dataLoadError}"><p class="ts-empty-state">Danh sách sản phẩm tạm thời chưa khả dụng. Vui lòng tải lại sản phẩm ở phía trên.</p></c:when>
+                <c:otherwise>
+                <c:choose>
+                    <c:when test="${not empty products}">
+                        <div class="ts-product-grid ts-catalog-grid">
+                            <c:forEach var="product" items="${products}">
+                    <article class="ts-product" data-product-id="<c:out value="${product.productId}"/>">
+                        <span class="ts-media">
+                            <c:set var="imagePath" value="${fn:trim(product.imageUrl)}"/>
+                            <c:set var="imageScheme" value="${fn:toLowerCase(imagePath)}"/>
+                            <c:choose>
+                                <c:when test="${not empty imagePath and (fn:startsWith(imageScheme, 'https://') or fn:startsWith(imageScheme, 'http://') or (not fn:contains(imagePath, ':') and not fn:startsWith(imagePath, '//')))}">
+                                    <c:url var="productImageUrl" value="${imagePath}"/>
+                                    <img src="<c:out value="${productImageUrl}"/>" alt="<c:out value="${product.productName}"/>" width="500" height="500" loading="lazy" decoding="async">
+                                    <span class="ts-image-fallback" hidden><svg class="ts-icon" aria-hidden="true" focusable="false"><use href="#ts-image"></use></svg><span>Ảnh đang cập nhật</span></span>
+                                </c:when>
+                                <c:otherwise>
+                                    <span class="ts-image-fallback"><svg class="ts-icon" aria-hidden="true" focusable="false"><use href="#ts-image"></use></svg><span>Ảnh đang cập nhật</span></span>
+                                </c:otherwise>
+                            </c:choose>
+                        </span>
+                        <div class="ts-product-body">
+                            <p class="ts-product-brand"><c:out value="${product.brandName}"/></p>
+                            <h3><c:out value="${product.productName}"/></h3>
+                            <p class="ts-price"><fmt:formatNumber value="${product.price}" type="currency" currencyCode="VND" minFractionDigits="0" maxFractionDigits="0"/></p>
+                        </div>
+                    </article>
+                            </c:forEach>
+                        </div>
+                    </c:when>
+                    <c:otherwise><p class="ts-empty-state">Hiện chưa có sản phẩm đang được bán.</p></c:otherwise>
+                </c:choose>
+            <c:if test="${not empty products}">
+                <p class="ts-catalog-summary" role="status">Hiển thị <fmt:formatNumber value="${firstProduct}" maxFractionDigits="0"/>–<fmt:formatNumber value="${lastProduct}" maxFractionDigits="0"/> trong <fmt:formatNumber value="${totalProducts}" maxFractionDigits="0"/> sản phẩm · Trang <fmt:formatNumber value="${currentPage}" maxFractionDigits="0"/>/<fmt:formatNumber value="${totalPages}" maxFractionDigits="0"/></p>
+            </c:if>
+            <c:if test="${totalPages gt 1}">
+                <nav class="ts-pagination" aria-label="Phân trang sản phẩm">
+                    <c:choose>
+                        <c:when test="${currentPage gt 1}">
+                            <c:url var="firstPageUrl" value="/home"><c:param name="page" value="1"/></c:url>
+                            <c:url var="previousPageUrl" value="/home"><c:param name="page" value="${currentPage - 1}"/></c:url>
+                            <a class="ts-page-link" href="<c:out value="${firstPageUrl}"/>#danh-sach" aria-label="Trang đầu">Đầu</a>
+                            <a class="ts-page-link" href="<c:out value="${previousPageUrl}"/>#danh-sach" aria-label="Trang trước" rel="prev">Trước</a>
+                        </c:when>
+                        <c:otherwise><span class="ts-page-link is-disabled" aria-disabled="true">Đầu</span><span class="ts-page-link is-disabled" aria-disabled="true">Trước</span></c:otherwise>
+                    </c:choose>
+                    <c:forEach var="pageNumber" items="${pageNumbers}">
+                        <c:choose>
+                            <c:when test="${pageNumber eq currentPage}"><span class="ts-page-link is-current" aria-current="page" aria-label="Trang <c:out value="${pageNumber}"/>"><c:out value="${pageNumber}"/></span></c:when>
+                            <c:otherwise>
+                                <c:url var="pageUrl" value="/home"><c:param name="page" value="${pageNumber}"/></c:url>
+                                <a class="ts-page-link" href="<c:out value="${pageUrl}"/>#danh-sach" aria-label="Trang <c:out value="${pageNumber}"/>"><c:out value="${pageNumber}"/></a>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
+                    <c:choose>
+                        <c:when test="${currentPage lt totalPages}">
+                            <c:url var="nextPageUrl" value="/home"><c:param name="page" value="${currentPage + 1}"/></c:url>
+                            <c:url var="lastPageUrl" value="/home"><c:param name="page" value="${totalPages}"/></c:url>
+                            <a class="ts-page-link" href="<c:out value="${nextPageUrl}"/>#danh-sach" aria-label="Trang tiếp" rel="next">Tiếp</a>
+                            <a class="ts-page-link" href="<c:out value="${lastPageUrl}"/>#danh-sach" aria-label="Trang cuối">Cuối</a>
+                        </c:when>
+                        <c:otherwise><span class="ts-page-link is-disabled" aria-disabled="true">Tiếp</span><span class="ts-page-link is-disabled" aria-disabled="true">Cuối</span></c:otherwise>
+                    </c:choose>
+                </nav>
+            </c:if>
+                </c:otherwise>
+            </c:choose>
         </section>
         <section class="ts-brands ts-section" id="thuong-hieu" aria-labelledby="ts-brands-title">
             <div class="ts-section-heading"><h2 id="ts-brands-title">Thương hiệu trong bộ sưu tập</h2></div>
@@ -313,8 +329,8 @@
         <section class="ts-support ts-section" id="ho-tro" aria-labelledby="ts-support-title">
             <div><p class="ts-eyebrow">THÔNG TIN HỮU ÍCH</p><h2 id="ts-support-title">Cùng bạn khám phá công nghệ.</h2><p>Tìm hiểu sản phẩm và thông tin mua sắm tại TechStore.</p></div>
             <div class="ts-support-questions">
-                <details><summary>Thông tin bảo hành xem ở đâu? <svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-chevron"></use></svg></summary><p>Thời hạn bảo hành được ghi theo từng sản phẩm. Bản giao diện này chưa có trang chi tiết sản phẩm hoạt động.</p></details>
-                <details><summary>TechStore hỗ trợ thanh toán gì? <svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-chevron"></use></svg></summary><p>Dự án sử dụng hình thức thanh toán khi nhận hàng (COD). Chức năng đặt hàng chưa khả dụng trong bản xem trước.</p></details>
+                <details><summary>Thông tin bảo hành xem ở đâu? <svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-chevron"></use></svg></summary><p>Thời hạn bảo hành được ghi theo từng sản phẩm. Trang chi tiết sản phẩm hiện chưa khả dụng.</p></details>
+                <details><summary>TechStore hỗ trợ thanh toán gì? <svg class="ts-icon " aria-hidden="true" focusable="false"><use href="#ts-chevron"></use></svg></summary><p>Dự án sử dụng hình thức thanh toán khi nhận hàng (COD). Chức năng đặt hàng hiện chưa khả dụng.</p></details>
             </div>
         </section>
     </main>
