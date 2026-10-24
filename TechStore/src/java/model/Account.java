@@ -1,13 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package model;
 
-/**
- *
- * @author Tinh Ba
- */
+package model;
+import java.time.LocalDateTime;
+
+
 public class Account {
     private int accountId;
     private Integer customerId;
@@ -17,10 +12,12 @@ public class Account {
     private String role;
     private boolean isActive;
 
+    private LocalDateTime createAt;
+
     public Account() {
     }
 
-    public Account(int accountId, Integer customerId, String userName, String email, String password, String role, boolean isActive) {
+    public Account(int accountId, Integer customerId, String userName, String email, String password, String role, boolean isActive, LocalDateTime createAt) {
         this.accountId = accountId;
         this.customerId = customerId;
         this.userName = userName;
@@ -28,6 +25,7 @@ public class Account {
         this.password = password;
         this.role = role;
         this.isActive = isActive;
+        this.createAt = createAt;
     }
 
     public int getAccountId() {
@@ -85,6 +83,16 @@ public class Account {
     public void setIsActive(boolean isActive) {
         this.isActive = isActive;
     }
+
+    public LocalDateTime getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(LocalDateTime createAt) {
+        this.createAt = createAt;
+    }
+    
+    
     
     
     
