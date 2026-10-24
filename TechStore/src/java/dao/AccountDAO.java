@@ -1,13 +1,37 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dao;
 
-/**
- *
- * @author Tinh Ba
- */
-public class AccountDAO {
-    
+import dal.DBContext;
+import model.Account;
+import java.sql.*;
+
+public class AccountDAO extends DBContext {
+
+    public Account getAccountByUsername(String username) {
+        String sql = "SELECT AccountID, CustomerID, Username, Email, PasswordHash, Role, IsActive "
+                + "FROM dbo.UserAccount WHERE Username = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, username);
+            try(ResultSet rs = st.executeQuery()) {
+                Account acc = new Account();
+                
+                //xu ly CustomerID co the null voi admin
+                int customerId = rs.getInt("CustomerID");
+                if(!rs.wasNull()) {
+                    acc.setAccountId(customerId);
+                }
+                
+                acc.setUserName(rs.getString("Username"));
+                acc.setEmail(rs.getString("Email"));
+                acc.setPassword(rs.getString("PasswordHash"));
+                acc.setRole(rs.getString("Role"));
+                acc.setRole(rs.getString("Role"));
+                acc.setIsActive(rs.getBoolean("IsActive"));
+                return acc;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
 }
