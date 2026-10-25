@@ -1291,3 +1291,110 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 .login-footer a:hover {
     text-decoration: underline;
 }
+
+/* ==============================================================
+   PROFILE PAGE
+   ============================================================== */
+.profile-wrapper {
+    background-color: var(--ts-background, #f5f6f8);
+    min-height: 100vh;
+    padding: 60px 20px;
+    font-family: Arial, "Helvetica Neue", sans-serif;
+}
+
+.profile-card {
+    max-width: 680px;
+    margin: 0 auto;
+    background: var(--ts-white, #ffffff);
+    border-radius: var(--ts-radius, 6px);
+    border: 1px solid var(--ts-border, #e5e8ef);
+    padding: 36px;
+    box-shadow: 0 4px 12px rgba(8, 15, 27, 0.04);
+}
+
+.profile-header {
+    margin-bottom: 28px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--ts-border, #e5e8ef);
+}
+
+.profile-header h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--ts-navy, #080f1b);
+    margin: 0 0 6px 0;
+}
+
+.profile-header p {
+    color: var(--ts-muted, #626b78);
+    font-size: 14px;
+    margin: 0;
+}
+
+.form-row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.form-hint {
+    display: block;
+    font-size: 11px;
+    color: var(--ts-muted, #626b78);
+    margin-top: 6px;
+}
+
+/* Ghi đè input bị disable cho trực quan hơn */
+input:disabled {
+    background-color: var(--ts-surface, #eff1f5);
+    cursor: not-allowed;
+    color: var(--ts-muted, #626b78);
+}
+
+.profile-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 36px;
+    padding-top: 24px;
+    border-top: 1px solid var(--ts-border, #e5e8ef);
+}
+
+.btn-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.6rem 1.2rem;
+    border: 1px solid var(--ts-border, #e5e8ef);
+    border-radius: var(--ts-radius, 6px);
+    background: var(--ts-white, #ffffff);
+    color: var(--ts-text, #151b26);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.btn-outline:hover {
+    background: var(--ts-surface, #eff1f5);
+    border-color: #ccd2de;
+}
+
+@media (max-width: 640px) {
+    .form-row-2 {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+    .profile-card {
+        padding: 24px 20px;
+    }
+    .profile-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .profile-actions .btn-primary, 
+    .profile-actions .btn-outline {
+        width: 100% !important;
+        text-align: center;
+    }
+}
