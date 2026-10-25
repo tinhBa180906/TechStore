@@ -3,6 +3,8 @@ package dao;
 import dal.DBContext;
 import model.Account;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AccountDAO extends DBContext {
 
@@ -10,41 +12,41 @@ public class AccountDAO extends DBContext {
         String sql = "SELECT AccountID, CustomerID, Username, Email, PasswordHash, Role, IsActive "
                 + "FROM dbo.UserAccount WHERE Username = ?";
         try (PreparedStatement st = connection.prepareStatement(sql)) {
-            
+
             st.setString(1, username);
-            try(ResultSet rs = st.executeQuery()) {
+            try (ResultSet rs = st.executeQuery()) {
                 Account acc = new Account();
-                
+
                 //gan dung accountID
                 acc.setAccountId(rs.getInt("AccountID"));
-                
+
                 //xu ly CustomerID co the null voi admin
                 int customerID = rs.getInt("CustomerID");
-                if(!rs.wasNull()) {
+                if (!rs.wasNull()) {
                     acc.setCustomerId(customerID);
                 }
-                
+
                 acc.setUserName(rs.getString("Username"));
                 acc.setEmail(rs.getString("Email"));
                 acc.setPassword(rs.getString("PasswordHash"));
                 acc.setRole(rs.getString("Role"));
                 acc.setIsActive(rs.getBoolean("IsActive"));
                 return acc;
-                
+
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return null;
     }
-    
+
     public boolean checkUsernameOrEmailExists(String name, String email) {
         String sql = "SELECT 1 FROM dbo.UserAccount WHERE Username = ? OR Email = ?";
         try (PreparedStatement st = connection.prepareStatement(sql)) {
-            
+
             st.setString(1, name);
             st.setString(2, email);
-            try(ResultSet rs = st.executeQuery()) {
+            try (ResultSet rs = st.executeQuery()) {
                 return rs.next();
             }
         } catch (SQLException e) {
@@ -52,10 +54,9 @@ public class AccountDAO extends DBContext {
         }
         return false;
     }
-    
-    
+
     public boolean registerNewCustomer(String username, String email, String passwordHash,
-                                    String fullname, String phone, String defaultAddress) {
+            String fullname, String phone, String defaultAddress) {
         String sqlCustomer = "INSERT INTO dbo.Customer (FullName, Phone, DefaultAddress) VALUES (?, ?, ?)";
         String sqlAccount = "INSERT INTO dbo.UserAccount (CustomerID, Username, Email, PasswordHash, Role) VALUES (?, ?, ?, ?, 'CUSTOMER')";
         PreparedStatement stCustomer = null;
@@ -64,24 +65,24 @@ public class AccountDAO extends DBContext {
         boolean isSuccess = false;
         try {
             connection.setAutoCommit(false);
-            
+
             stCustomer = connection.prepareStatement(sqlCustomer);
             stCustomer.setString(1, fullname);
             stCustomer.setString(2, phone);
             stCustomer.setString(3, defaultAddress);
             stCustomer.executeUpdate();
             rsGeneratedKeys = stCustomer.getGeneratedKeys();
-            if(rsGeneratedKeys.next()) {
+            if (rsGeneratedKeys.next()) {
                 int newCustomerID = rsGeneratedKeys.getInt(1);
-                
+
                 stAccount = connection.prepareStatement(sqlAccount);
                 stAccount.setInt(1, newCustomerID);
                 stAccount.setString(2, username);
                 stAccount.setString(3, email);
                 stAccount.setString(4, passwordHash);
-                
+
                 int rowAffected = stAccount.executeUpdate();
-                if(rowAffected > 0) {
+                if (rowAffected > 0) {
                     connection.commit();
                     isSuccess = true;
                 } else {
@@ -92,20 +93,67 @@ public class AccountDAO extends DBContext {
             }
         } catch (SQLException e) {
             System.out.println("Error rollback: " + e.getMessage());
-        }
-        finally{
+        } finally {
             try {
-                if(rsGeneratedKeys != null) rsGeneratedKeys.close();
-                if(stCustomer != null) stCustomer.close();
-                if(stAccount != null) stAccount.close();
-                if(connection != null) connection.setAutoCommit(true);
+                if (rsGeneratedKeys != null) {
+                    rsGeneratedKeys.close();
+                }
+                if (stCustomer != null) {
+                    stCustomer.close();
+                }
+                if (stAccount != null) {
+                    stAccount.close();
+                }
+                if (connection != null) {
+                    connection.setAutoCommit(true);
+                }
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
             }
-            
-           
+
         }
         return isSuccess;
     }
+
+    public List<Account> getAllAccount() {
+        List<Account> list = new ArrayList<>();
+        String sql = "SELECT AccountID, CustomerID, Username, Email, Role, IsActive FROM dbo.UserAccount";
+
+        try (PreparedStatement st = connection.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
+
+            while (rs.next()) {
+                Account acc = new Account();
+                acc.setAccountId(rs.getInt("AccountID"));
+
+                int customerId = rs.getInt("CustomerID");
+                if (!rs.wasNull()) {
+                    acc.setCustomerId(customerId);
+                }
+
+                acc.setUserName(rs.getString("Username"));
+                acc.setEmail(rs.getString("Email"));
+                acc.setRole(rs.getString("Role"));
+                acc.setIsActive(rs.getBoolean("IsActive"));
+
+                list.add(acc);
+            }
+        } catch (SQLException e) {
+            System.out.println("Lỗi getAllAccounts: " + e.getMessage());
+        }
+        return list;
+    }
     
+    public boolean updateAccountStatus(int accountId, boolean isActive) {
+    String sql = "UPDATE dbo.UserAccount SET IsActive = ? WHERE AccountID = ?";
+    
+    try (PreparedStatement st = connection.prepareStatement(sql)) {
+        st.setBoolean(1, isActive);
+        st.setInt(2, accountId);
+        return st.executeUpdate() > 0;
+    } catch (SQLException e) {
+        System.out.println("Lỗi updateAccountStatus: " + e.getMessage());
+    }
+    return false;
+}
+
 }
