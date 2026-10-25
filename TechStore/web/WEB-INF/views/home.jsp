@@ -331,12 +331,9 @@
                                                 aria-label="Sản phẩm bán chạy, có thể cuộn ngang trên điện thoại"
                                                 tabindex="0">
                                                 <c:forEach var="product" items="${bestSellingProducts}">
-                                                    <article class="ts-product" data-product-id="<c:out value="
-                                                        ${product.productId}" />">
-                                                    <a href="${pageContext.request.contextPath}/product-detail?id=<c:out value="
-                                                        ${product.productId}" />" class="ts-product-card-link"
-                                                    aria-label="Xem chi tiết
-                                                    <c:out value="${product.productName}" />">
+                                                    <article class="ts-product" data-product-id="${product.productId}">
+                                                    <a href="${pageContext.request.contextPath}/product-detail?id=${product.productId}" class="ts-product-card-link"
+                                                    aria-label="Xem chi tiết ${fn:escapeXml(product.productName)}">
                                                     <span class="ts-media">
                                                         <c:set var="imagePath" value="${fn:trim(product.imageUrl)}" />
                                                         <c:set var="imageScheme" value="${fn:toLowerCase(imagePath)}" />
@@ -344,8 +341,7 @@
                                                             <c:when
                                                                 test="${not empty imagePath and (fn:startsWith(imageScheme, 'https://') or fn:startsWith(imageScheme, 'http://') or (not fn:contains(imagePath, ':') and not fn:startsWith(imagePath, '//')))}">
                                                                 <c:url var="productImageUrl" value="${imagePath}" />
-                                                                <img src="<c:out value=" ${productImageUrl}" />" alt="
-                                                                <c:out value="${product.productName}" />" width="500"
+                                                                <img src="${productImageUrl}" alt="${fn:escapeXml(product.productName)}" width="500"
                                                                 height="500" loading="lazy" decoding="async">
                                                                 <span class="ts-image-fallback" hidden><svg
                                                                         class="ts-icon" aria-hidden="true"
@@ -400,12 +396,9 @@
                                         <c:when test="${not empty featuredProducts}">
                                             <div class="ts-featured-grid">
                                                 <c:forEach var="product" items="${featuredProducts}">
-                                                    <article class="ts-product" data-product-id="<c:out value="
-                                                        ${product.productId}" />">
-                                                    <a href="${pageContext.request.contextPath}/product-detail?id=<c:out value="
-                                                        ${product.productId}" />" class="ts-product-card-link"
-                                                    aria-label="Xem chi tiết
-                                                    <c:out value="${product.productName}" />">
+                                                    <article class="ts-product" data-product-id="${product.productId}">
+                                                    <a href="${pageContext.request.contextPath}/product-detail?id=${product.productId}" class="ts-product-card-link"
+                                                    aria-label="Xem chi tiết ${fn:escapeXml(product.productName)}">
                                                     <span class="ts-media">
                                                         <c:set var="imagePath" value="${fn:trim(product.imageUrl)}" />
                                                         <c:set var="imageScheme" value="${fn:toLowerCase(imagePath)}" />
@@ -413,8 +406,7 @@
                                                             <c:when
                                                                 test="${not empty imagePath and (fn:startsWith(imageScheme, 'https://') or fn:startsWith(imageScheme, 'http://') or (not fn:contains(imagePath, ':') and not fn:startsWith(imagePath, '//')))}">
                                                                 <c:url var="productImageUrl" value="${imagePath}" />
-                                                                <img src="<c:out value=" ${productImageUrl}" />" alt="
-                                                                <c:out value="${product.productName}" />" width="500"
+                                                                <img src="${productImageUrl}" alt="${fn:escapeXml(product.productName)}" width="500"
                                                                 height="500" loading="lazy" decoding="async">
                                                                 <span class="ts-image-fallback" hidden><svg
                                                                         class="ts-icon" aria-hidden="true"
@@ -468,12 +460,9 @@
                                         <c:when test="${not empty newProducts}">
                                             <div class="ts-newest-grid">
                                                 <c:forEach var="product" items="${newProducts}">
-                                                    <article class="ts-product" data-product-id="<c:out value="
-                                                        ${product.productId}" />">
-                                                    <a href="${pageContext.request.contextPath}/product-detail?id=<c:out value="
-                                                        ${product.productId}" />" class="ts-product-card-link"
-                                                    aria-label="Xem chi tiết
-                                                    <c:out value="${product.productName}" />">
+                                                    <article class="ts-product" data-product-id="${product.productId}">
+                                                    <a href="${pageContext.request.contextPath}/product-detail?id=${product.productId}" class="ts-product-card-link"
+                                                    aria-label="Xem chi tiết ${fn:escapeXml(product.productName)}">
                                                     <span class="ts-media">
                                                         <c:set var="imagePath" value="${fn:trim(product.imageUrl)}" />
                                                         <c:set var="imageScheme" value="${fn:toLowerCase(imagePath)}" />
@@ -481,8 +470,7 @@
                                                             <c:when
                                                                 test="${not empty imagePath and (fn:startsWith(imageScheme, 'https://') or fn:startsWith(imageScheme, 'http://') or (not fn:contains(imagePath, ':') and not fn:startsWith(imagePath, '//')))}">
                                                                 <c:url var="productImageUrl" value="${imagePath}" />
-                                                                <img src="<c:out value=" ${productImageUrl}" />" alt="
-                                                                <c:out value="${product.productName}" />" width="500"
+                                                                <img src="${productImageUrl}" alt="${fn:escapeXml(product.productName)}" width="500"
                                                                 height="500" loading="lazy" decoding="async">
                                                                 <span class="ts-image-fallback" hidden><svg
                                                                         class="ts-icon" aria-hidden="true"
@@ -547,8 +535,7 @@
                                                 <use href="#ts-search"></use>
                                             </svg>
                                             <input id="ts-search-input" name="q" type="search"
-                                                placeholder="Bạn đang tìm gì?" value="<c:out value="
-                                                ${currentKeyword}" />">
+                                                placeholder="Bạn đang tìm gì?" value="${fn:escapeXml(currentKeyword)}">
                                         </div>
                                     </div>
                                     <div class="ts-filter">
@@ -627,12 +614,9 @@
                                         <c:when test="${not empty products}">
                                             <div class="ts-product-grid ts-catalog-grid">
                                                 <c:forEach var="product" items="${products}">
-                                                    <article class="ts-product" data-product-id="<c:out value="
-                                                        ${product.productId}" />">
-                                                    <a href="${pageContext.request.contextPath}/product-detail?id=<c:out value="
-                                                        ${product.productId}" />" class="ts-product-card-link"
-                                                    aria-label="Xem chi tiết
-                                                    <c:out value="${product.productName}" />">
+                                                    <article class="ts-product" data-product-id="${product.productId}">
+                                                    <a href="${pageContext.request.contextPath}/product-detail?id=${product.productId}" class="ts-product-card-link"
+                                                    aria-label="Xem chi tiết ${fn:escapeXml(product.productName)}">
                                                     <span class="ts-media">
                                                         <c:set var="imagePath" value="${fn:trim(product.imageUrl)}" />
                                                         <c:set var="imageScheme" value="${fn:toLowerCase(imagePath)}" />
@@ -640,8 +624,7 @@
                                                             <c:when
                                                                 test="${not empty imagePath and (fn:startsWith(imageScheme, 'https://') or fn:startsWith(imageScheme, 'http://') or (not fn:contains(imagePath, ':') and not fn:startsWith(imagePath, '//')))}">
                                                                 <c:url var="productImageUrl" value="${imagePath}" />
-                                                                <img src="<c:out value=" ${productImageUrl}" />" alt="
-                                                                <c:out value="${product.productName}" />" width="500"
+                                                                <img src="${productImageUrl}" alt="${fn:escapeXml(product.productName)}" width="500"
                                                                 height="500" loading="lazy" decoding="async">
                                                                 <span class="ts-image-fallback" hidden><svg
                                                                         class="ts-icon" aria-hidden="true"
@@ -734,10 +717,8 @@
                                                         </c:if>
                                                         <c:param name="page" value="${currentPage - 1}" />
                                                     </c:url>
-                                                    <a class="ts-page-link" href="<c:out value="
-                                                        ${firstPageUrl}" />#danh-sach" aria-label="Trang đầu">Đầu</a>
-                                                    <a class="ts-page-link" href="<c:out value="
-                                                        ${previousPageUrl}" />#danh-sach" aria-label="Trang trước"
+                                                    <a class="ts-page-link" href="${firstPageUrl}#danh-sach" aria-label="Trang đầu">Đầu</a>
+                                                    <a class="ts-page-link" href="${previousPageUrl}#danh-sach" aria-label="Trang trước"
                                                     rel="prev">Trước</a>
                                                 </c:when>
                                                 <c:otherwise><span class="ts-page-link is-disabled"
@@ -749,7 +730,7 @@
                                                 <c:choose>
                                                     <c:when test="${pageNumber eq currentPage}"><span
                                                             class="ts-page-link is-current" aria-current="page"
-                                                            aria-label="Trang <c:out value=" ${pageNumber}" />">
+                                                            aria-label="Trang ${pageNumber}">
                                                         <c:out value="${pageNumber}" /></span>
                                                     </c:when>
                                                     <c:otherwise>
@@ -773,9 +754,7 @@
                                                             </c:if>
                                                             <c:param name="page" value="${pageNumber}" />
                                                         </c:url>
-                                                        <a class="ts-page-link" href="<c:out value="
-                                                            ${pageUrl}" />#danh-sach" aria-label="Trang
-                                                        <c:out value="${pageNumber}" />">
+                                                        <a class="ts-page-link" href="${pageUrl}#danh-sach" aria-label="Trang ${pageNumber}">
                                                         <c:out value="${pageNumber}" /></a>
                                                     </c:otherwise>
                                                 </c:choose>
@@ -822,11 +801,9 @@
                                                         </c:if>
                                                         <c:param name="page" value="${totalPages}" />
                                                     </c:url>
-                                                    <a class="ts-page-link" href="<c:out value="
-                                                        ${nextPageUrl}" />#danh-sach" aria-label="Trang tiếp"
+                                                    <a class="ts-page-link" href="${nextPageUrl}#danh-sach" aria-label="Trang tiếp"
                                                     rel="next">Tiếp</a>
-                                                    <a class="ts-page-link" href="<c:out value="
-                                                        ${lastPageUrl}" />#danh-sach" aria-label="Trang cuối">Cuối</a>
+                                                    <a class="ts-page-link" href="${lastPageUrl}#danh-sach" aria-label="Trang cuối">Cuối</a>
                                                 </c:when>
                                                 <c:otherwise><span class="ts-page-link is-disabled"
                                                         aria-disabled="true">Tiếp</span><span
