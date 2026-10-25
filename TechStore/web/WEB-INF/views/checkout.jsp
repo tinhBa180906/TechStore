@@ -1,9 +1,20 @@
-﻿<%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Đặt hàng | TechStore</title><link rel="stylesheet" href="${pageContext.request.contextPath}/css/orders.css"></head>
-<body class="orders-page"><%@include file="orders-common.jspf"%><main><h1>Thông tin đặt hàng</h1>
+<body class="orders-page"><fmt:setLocale value="vi_VN"/>
+<%-- Module-local navigation; shared product header/footer remain owned by Quang. --%>
+<nav aria-label="Điều hướng">
+    <a href="${pageContext.request.contextPath}/home">TechStore</a>
+    <a href="${pageContext.request.contextPath}/cart">Giỏ hàng</a>
+    <c:if test="${sessionScope.user.role == 'CUSTOMER'}"><a href="${pageContext.request.contextPath}/orders">Đơn hàng của tôi</a></c:if>
+    <c:if test="${sessionScope.user.role == 'ADMIN'}">
+        <a href="${pageContext.request.contextPath}/admin/orders">Quản lý đơn hàng</a>
+        <a href="${pageContext.request.contextPath}/admin/dashboard">Thống kê</a>
+    </c:if>
+</nav>
+<main><h1>Thông tin đặt hàng</h1>
 <c:if test="${not empty errorMessage}"><p class="error" role="alert"><c:out value="${errorMessage}"/></p></c:if>
 <c:choose><c:when test="${empty cartItems}"><section>Giỏ hàng đang trống. <a href="${pageContext.request.contextPath}/cart">Quay lại giỏ hàng</a></section></c:when>
 <c:otherwise><section>
