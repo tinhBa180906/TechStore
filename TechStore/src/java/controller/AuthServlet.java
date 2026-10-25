@@ -96,6 +96,12 @@ public class AuthServlet extends HttpServlet {
             req.getRequestDispatcher("/register.jsp").forward(req, resp);
             return;
         }
+        
+        if(passwordRaw.length() < 8) {
+            req.setAttribute("errorMessage", "Mật khẩu phải có ít nhất 8 ký tự!");
+            req.getRequestDispatcher("/register.jsp").forward(req, resp);
+            return;
+        }
 
         //kiem tra user name hoaawcj password tồn tại
         if (accountDao.checkUsernameOrEmailExists(username, email)) {
