@@ -1,0 +1,6 @@
+<%@page pageEncoding="UTF-8"%>
+<div class="table-wrap"><table><thead><tr><th>Sản phẩm</th><th>Số lượng</th><th>Giá lúc mua</th><th>Thành tiền</th></tr></thead><tbody>
+<c:forEach items="${order.details}" var="detail"><tr><td><c:out value="${detail.product.productName}"/></td>
+<td>${detail.quantity}</td><td><fmt:formatNumber value="${detail.unitPrice}" type="number"/> ₫</td>
+<td><fmt:formatNumber value="${detail.unitPrice * detail.quantity}" type="number"/> ₫</td></tr></c:forEach>
+</tbody></table></div><p class="total">Tổng: <fmt:formatNumber value="${order.totalAmount}" type="number"/> ₫</p>
