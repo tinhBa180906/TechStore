@@ -143,11 +143,19 @@ public class Product {
         return isFeatured;
     }
 
+    public boolean isFeatured() {
+        return isFeatured;
+    }
+
     public void setIsFeatured(boolean isFeatured) {
         this.isFeatured = isFeatured;
     }
 
     public boolean isIsActive() {
+        return isActive;
+    }
+
+    public boolean isActive() {
         return isActive;
     }
 
