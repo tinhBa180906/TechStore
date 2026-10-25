@@ -3,6 +3,8 @@ package dao;
 import dal.DBContext;
 import model.Account;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AccountDAO extends DBContext {
 
@@ -106,6 +108,35 @@ public class AccountDAO extends DBContext {
            
         }
         return isSuccess;
+    }
+    
+    public List<Account> getAllAccount() {
+        List<Account> list = new ArrayList<>();
+        String sql = "SELECT AccountID, CustomerID, Username, Email, Role, IsActive FROM dbo.UserAccount";
+    
+    try (PreparedStatement st = connection.prepareStatement(sql);
+         ResultSet rs = st.executeQuery()) {
+         
+        while (rs.next()) {
+            Account acc = new Account();
+            acc.setAccountId(rs.getInt("AccountID"));
+            
+            int customerId = rs.getInt("CustomerID");
+            if (!rs.wasNull()) {
+                acc.setCustomerId(customerId);
+            }
+            
+            acc.setUserName(rs.getString("Username"));
+            acc.setEmail(rs.getString("Email"));
+            acc.setRole(rs.getString("Role"));
+            acc.setIsActive(rs.getBoolean("IsActive"));
+            
+            list.add(acc);
+        }
+    } catch (SQLException e) {
+        System.out.println("Lỗi getAllAccounts: " + e.getMessage());
+    }
+    return list;
     }
     
 }
