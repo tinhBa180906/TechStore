@@ -66,7 +66,7 @@ public class AccountDAO extends DBContext {
         try {
             connection.setAutoCommit(false);
 
-            stCustomer = connection.prepareStatement(sqlCustomer);
+            stCustomer = connection.prepareStatement(sqlCustomer, Statement.RETURN_GENERATED_KEYS);
             stCustomer.setString(1, fullname);
             stCustomer.setString(2, phone);
             stCustomer.setString(3, defaultAddress);
