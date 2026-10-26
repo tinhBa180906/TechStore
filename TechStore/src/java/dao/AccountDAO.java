@@ -15,23 +15,25 @@ public class AccountDAO extends DBContext {
 
             st.setString(1, username);
             try (ResultSet rs = st.executeQuery()) {
-                Account acc = new Account();
+                if (rs.next()) {
+                    Account acc = new Account();
 
-                //gan dung accountID
-                acc.setAccountId(rs.getInt("AccountID"));
+                    //gan dung accountID
+                    acc.setAccountId(rs.getInt("AccountID"));
 
-                //xu ly CustomerID co the null voi admin
-                int customerID = rs.getInt("CustomerID");
-                if (!rs.wasNull()) {
-                    acc.setCustomerId(customerID);
+                    //xu ly CustomerID co the null voi admin
+                    int customerID = rs.getInt("CustomerID");
+                    if (!rs.wasNull()) {
+                        acc.setCustomerId(customerID);
+                    }
+
+                    acc.setUserName(rs.getString("Username"));
+                    acc.setEmail(rs.getString("Email"));
+                    acc.setPassword(rs.getString("PasswordHash"));
+                    acc.setRole(rs.getString("Role"));
+                    acc.setIsActive(rs.getBoolean("IsActive"));
+                    return acc;
                 }
-
-                acc.setUserName(rs.getString("Username"));
-                acc.setEmail(rs.getString("Email"));
-                acc.setPassword(rs.getString("PasswordHash"));
-                acc.setRole(rs.getString("Role"));
-                acc.setIsActive(rs.getBoolean("IsActive"));
-                return acc;
 
             }
         } catch (SQLException e) {
@@ -142,18 +144,18 @@ public class AccountDAO extends DBContext {
         }
         return list;
     }
-    
+
     public boolean updateAccountStatus(int accountId, boolean isActive) {
-    String sql = "UPDATE dbo.UserAccount SET IsActive = ? WHERE AccountID = ?";
-    
-    try (PreparedStatement st = connection.prepareStatement(sql)) {
-        st.setBoolean(1, isActive);
-        st.setInt(2, accountId);
-        return st.executeUpdate() > 0;
-    } catch (SQLException e) {
-        System.out.println("Lỗi updateAccountStatus: " + e.getMessage());
+        String sql = "UPDATE dbo.UserAccount SET IsActive = ? WHERE AccountID = ?";
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setBoolean(1, isActive);
+            st.setInt(2, accountId);
+            return st.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.out.println("Lỗi updateAccountStatus: " + e.getMessage());
+        }
+        return false;
     }
-    return false;
-}
 
 }
