@@ -6,6 +6,7 @@ package controller.admin;
 
 import dao.AccountDAO;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,6 +19,7 @@ import model.Account;
  *
  * @author Tinh Ba
  */
+@WebServlet(name = "AdminUserServlet", urlPatterns = {"/admin/users"})
 public class AdminUserServlet extends HttpServlet {
 
     private final AccountDAO accountDAO = new AccountDAO();
