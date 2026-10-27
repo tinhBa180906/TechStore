@@ -9,8 +9,11 @@ import java.util.List;
 public class AccountDAO extends DBContext {
 
     public Account getAccountByUsername(String username) {
-        String sql = "SELECT AccountID, CustomerID, Username, Email, PasswordHash, Role, IsActive "
-                + "FROM dbo.UserAccount WHERE Username = ?";
+        String sql = "SELECT ua.AccountID, ua.CustomerID, ua.Username, ua.Email, ua.PasswordHash, ua.Role, ua.IsActive, "
+                + "c.FullName, c.Phone, c.DefaultAddress "
+                + "FROM dbo.UserAccount ua "
+                + "LEFT JOIN dbo.Customer c ON ua.CustomerID = c.CustomerID "
+                + "WHERE ua.Username = ?";
         try (PreparedStatement st = connection.prepareStatement(sql)) {
 
             st.setString(1, username);
@@ -32,6 +35,9 @@ public class AccountDAO extends DBContext {
                     acc.setPassword(rs.getString("PasswordHash"));
                     acc.setRole(rs.getString("Role"));
                     acc.setIsActive(rs.getBoolean("IsActive"));
+                    acc.setFullname(rs.getNString("FullName"));
+                    acc.setPhone(rs.getString("Phone"));
+                    acc.setDefaultAddress(rs.getNString("DefaultAddress"));
                     return acc;
                 }
 
@@ -69,9 +75,9 @@ public class AccountDAO extends DBContext {
             connection.setAutoCommit(false);
 
             stCustomer = connection.prepareStatement(sqlCustomer, Statement.RETURN_GENERATED_KEYS);
-            stCustomer.setString(1, fullname);
+            stCustomer.setNString(1, fullname);
             stCustomer.setString(2, phone);
-            stCustomer.setString(3, defaultAddress);
+            stCustomer.setNString(3, defaultAddress);
             stCustomer.executeUpdate();
             rsGeneratedKeys = stCustomer.getGeneratedKeys();
             if (rsGeneratedKeys.next()) {
@@ -119,7 +125,10 @@ public class AccountDAO extends DBContext {
 
     public List<Account> getAllAccount() {
         List<Account> list = new ArrayList<>();
-        String sql = "SELECT AccountID, CustomerID, Username, Email, Role, IsActive FROM dbo.UserAccount";
+        String sql = "SELECT ua.AccountID, ua.CustomerID, ua.Username, ua.Email, ua.Role, ua.IsActive, "
+                + "c.FullName, c.Phone, c.DefaultAddress "
+                + "FROM dbo.UserAccount ua "
+                + "LEFT JOIN dbo.Customer c ON ua.CustomerID = c.CustomerID";
 
         try (PreparedStatement st = connection.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
 
@@ -136,6 +145,9 @@ public class AccountDAO extends DBContext {
                 acc.setEmail(rs.getString("Email"));
                 acc.setRole(rs.getString("Role"));
                 acc.setIsActive(rs.getBoolean("IsActive"));
+                acc.setFullname(rs.getNString("FullName"));
+                acc.setPhone(rs.getString("Phone"));
+                acc.setDefaultAddress(rs.getNString("DefaultAddress"));
 
                 list.add(acc);
             }
@@ -154,6 +166,20 @@ public class AccountDAO extends DBContext {
             return st.executeUpdate() > 0;
         } catch (SQLException e) {
             System.out.println("Lỗi updateAccountStatus: " + e.getMessage());
+        }
+        return false;
+    }
+
+    public boolean updateCustomerProfile(int customerId, String fullname, String phone, String defaultAddress) {
+        String sql = "UPDATE dbo.Customer SET FullName = ?, Phone = ?, DefaultAddress = ? WHERE CustomerID = ?";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setNString(1, fullname);
+            st.setString(2, phone);
+            st.setNString(3, defaultAddress);
+            st.setInt(4, customerId);
+            return st.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.out.println("Lỗi updateCustomerProfile: " + e.getMessage());
         }
         return false;
     }

@@ -1,4 +1,3 @@
-
 package model;
 import java.time.LocalDateTime;
 
@@ -11,6 +10,9 @@ public class Account {
     private String password;
     private String role;
     private boolean isActive;
+    private String fullname;
+    private String phone;
+    private String defaultAddress;
 
     private LocalDateTime createAt;
 
@@ -52,6 +54,14 @@ public class Account {
         this.userName = userName;
     }
 
+    public String getUsername() {
+        return userName;
+    }
+
+    public void setUsername(String username) {
+        this.userName = username;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -84,6 +94,30 @@ public class Account {
         this.isActive = isActive;
     }
 
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getDefaultAddress() {
+        return defaultAddress;
+    }
+
+    public void setDefaultAddress(String defaultAddress) {
+        this.defaultAddress = defaultAddress;
+    }
+
     public LocalDateTime getCreateAt() {
         return createAt;
     }
@@ -91,9 +125,4 @@ public class Account {
     public void setCreateAt(LocalDateTime createAt) {
         this.createAt = createAt;
     }
-    
-    
-    
-    
-    
 }

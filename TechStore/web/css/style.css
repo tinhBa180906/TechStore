@@ -1398,3 +1398,271 @@ input:disabled {
         text-align: center;
     }
 }
+
+
+/* ==============================================================
+   HEADER AUTH BUTTONS & PROFILE DROPDOWN MENU
+   ============================================================== */
+.techstore-home .ts-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.techstore-home .ts-auth-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.techstore-home .ts-auth-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    padding: 0 14px;
+    border-radius: var(--ts-radius, 6px);
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: background-color 0.16s ease, border-color 0.16s ease, color 0.16s ease;
+}
+
+.techstore-home .ts-auth-btn-login {
+    border: 1px solid var(--ts-border, #e5e8ef);
+    background: var(--ts-white, #fff);
+    color: var(--ts-text, #151b26);
+}
+
+.techstore-home .ts-auth-btn-login:hover {
+    background: var(--ts-surface, #eff1f5);
+    border-color: #ccd2de;
+}
+
+.techstore-home .ts-auth-btn-register {
+    border: 1px solid var(--ts-blue, #0757ce);
+    background: var(--ts-blue, #0757ce);
+    color: var(--ts-white, #fff);
+}
+
+.techstore-home .ts-auth-btn-register:hover {
+    background: #0645a2;
+    border-color: #0645a2;
+}
+
+.techstore-home .ts-profile-dropdown {
+    position: relative;
+}
+
+.techstore-home .ts-profile-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 4px 12px 4px 6px;
+    border: 1px solid var(--ts-border, #e5e8ef);
+    border-radius: 999px;
+    background: var(--ts-background, #f5f6f8);
+    color: var(--ts-text, #151b26);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+    transition: background-color 0.16s ease, border-color 0.16s ease;
+}
+
+.techstore-home .ts-profile-trigger::-webkit-details-marker {
+    display: none;
+}
+
+.techstore-home .ts-profile-trigger:hover,
+.techstore-home .ts-profile-dropdown[open] .ts-profile-trigger {
+    background: var(--ts-surface, #eff1f5);
+    border-color: #ccd2de;
+}
+
+.techstore-home .ts-profile-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--ts-blue, #0757ce);
+    color: var(--ts-white, #fff);
+}
+
+.techstore-home .ts-profile-avatar .ts-icon {
+    width: 15px;
+    height: 15px;
+}
+
+.techstore-home .ts-profile-name {
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.techstore-home .ts-profile-caret {
+    width: 14px;
+    height: 14px;
+    color: var(--ts-muted, #626b78);
+    transform: rotate(90deg);
+    transition: transform 0.16s ease;
+}
+
+.techstore-home .ts-profile-dropdown[open] .ts-profile-caret {
+    transform: rotate(-90deg);
+}
+
+.techstore-home .ts-profile-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    z-index: 40;
+    min-width: 220px;
+    padding: 6px;
+    background: var(--ts-white, #fff);
+    border: 1px solid var(--ts-border, #e5e8ef);
+    border-radius: 8px;
+    box-shadow: 0 12px 28px rgba(8, 15, 27, 0.12);
+}
+
+.techstore-home .ts-profile-menu-header {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--ts-border, #e5e8ef);
+    margin-bottom: 4px;
+}
+
+.techstore-home .ts-profile-menu-header strong {
+    display: block;
+    font-size: 13px;
+    color: var(--ts-navy, #080f1b);
+}
+
+.techstore-home .ts-profile-menu-header small {
+    display: block;
+    font-size: 11px;
+    color: var(--ts-muted, #626b78);
+    margin-top: 2px;
+}
+
+.techstore-home .ts-profile-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ts-text, #151b26);
+    transition: background-color 0.14s ease, color 0.14s ease;
+}
+
+.techstore-home .ts-profile-menu-item .ts-icon {
+    width: 16px;
+    height: 16px;
+    color: var(--ts-muted, #626b78);
+}
+
+.techstore-home .ts-profile-menu-item:hover {
+    background: var(--ts-background, #f5f6f8);
+    color: var(--ts-blue, #0757ce);
+}
+
+.techstore-home .ts-profile-menu-item:hover .ts-icon {
+    color: var(--ts-blue, #0757ce);
+}
+
+.techstore-home .ts-profile-menu-divider {
+    height: 1px;
+    background: var(--ts-border, #e5e8ef);
+    margin: 4px 0;
+}
+
+.techstore-home .ts-profile-logout {
+    color: #dc2626;
+}
+
+.techstore-home .ts-profile-logout .ts-icon {
+    color: #dc2626;
+}
+
+.techstore-home .ts-profile-logout:hover {
+    background: #fef2f2;
+    color: #b91c1c;
+}
+
+.techstore-home .ts-profile-logout:hover .ts-icon {
+    color: #b91c1c;
+}
+
+@media (max-width: 767px) {
+    .techstore-home .ts-auth-actions {
+        gap: 6px;
+    }
+    .techstore-home .ts-auth-btn {
+        padding: 0 10px;
+        min-height: 34px;
+        font-size: 11px;
+    }
+    .techstore-home .ts-profile-name {
+        display: none;
+    }
+}
+
+
+/* ==============================================================
+   HEADER SHOPPING CART ICON & BADGE (SHOPEE STYLE)
+   ============================================================== */
+.techstore-home .ts-cart-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    color: var(--ts-text, #151b26);
+    transition: background-color 0.16s ease, color 0.16s ease;
+}
+
+.techstore-home .ts-cart-link:hover {
+    background: var(--ts-surface, #eff1f5);
+    color: var(--ts-blue, #0757ce);
+}
+
+.techstore-home .ts-cart-icon-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.techstore-home .ts-cart-icon-wrap .ts-icon {
+    width: 24px;
+    height: 24px;
+    stroke-width: 1.75;
+}
+
+.techstore-home .ts-cart-badge {
+    position: absolute;
+    top: -8px;
+    right: -12px;
+    min-width: 20px;
+    height: 18px;
+    padding: 0 5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: var(--ts-blue, #0757ce);
+    color: var(--ts-white, #fff);
+    border: 2px solid var(--ts-white, #fff);
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
