@@ -25,7 +25,7 @@
         </nav>
     </div>
     <div class="ts-container ts-footer-bottom">
-        <p>TechStore · Dự án PRJ301 · FPT University · Nhóm 1 · Khuất Bá Tình</p>
+        <p>TechStore · Dự án PRJ301 · FPT University · Nhóm 1 · Khuất Bá Tình · Vũ Hồng Quang · Nguyễn Tùng Thái</p>
         <p>Ảnh sản phẩm: <a href="https://www.apple.com/" rel="noopener noreferrer" target="_blank">Apple</a>,
             <a href="https://www.sony.jp/headphone/" rel="noopener noreferrer" target="_blank">Sony</a>, <a
                 href="https://www.mi.com/global/" rel="noopener noreferrer" target="_blank">Xiaomi</a>.</p>
