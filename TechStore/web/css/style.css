@@ -199,22 +199,27 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 .techstore-home .ts-preview-note .ts-icon { width: 16px; height: 16px; color: var(--ts-blue); }
 .techstore-home .ts-products-area > .ts-section:first-of-type { margin-top: 22px; }
 .techstore-home .ts-product-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; }
-.techstore-home .ts-product { min-width: 0; overflow: hidden; background: var(--ts-background); border: 1px solid #f0f1f4; border-radius: var(--ts-radius); }
-.techstore-home .ts-product > .ts-media { height: 182px; padding: 14px; }
-.techstore-home .ts-product-body { padding: 8px 14px 18px; }
-.techstore-home .ts-product-brand { color: var(--ts-muted); font-size: 10px; }
-.techstore-home .ts-product h3 { display: -webkit-box; min-height: 39px; margin-top: 5px; overflow: hidden; -webkit-line-clamp: 2; -webkit-box-orient: vertical; font-size: 12px; font-weight: 500; line-height: 1.6; overflow-wrap: anywhere; }
-.techstore-home .ts-price { margin-top: 10px; font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.techstore-home .ts-product { display: flex; flex-direction: column; height: 100%; min-width: 0; overflow: hidden; background: var(--ts-background); border: 1px solid #f0f1f4; border-radius: var(--ts-radius); transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease; }
+.techstore-home .ts-product:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(8, 15, 27, 0.08); border-color: #dfe3eb; }
+.techstore-home .ts-product .ts-media,
+.techstore-home .ts-product > .ts-media { position: relative; display: flex; align-items: center; justify-content: center; height: 182px; padding: 14px; background: #fff; border-bottom: 1px solid #f0f1f4; flex-shrink: 0; overflow: hidden; }
+.techstore-home .ts-product .ts-media img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; transition: transform 0.2s ease; }
+.techstore-home .ts-product-card-link:hover .ts-media img { transform: scale(1.04); }
+.techstore-home .ts-product-body { display: flex; flex-direction: column; flex: 1; padding: 10px 14px 16px; }
+.techstore-home .ts-product-brand { color: var(--ts-muted); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.techstore-home .ts-product h3 { display: -webkit-box; min-height: 38px; height: 38px; margin-top: 0; margin-bottom: 6px; overflow: hidden; -webkit-line-clamp: 2; -webkit-box-orient: vertical; font-size: 12px; font-weight: 500; line-height: 1.55; color: var(--ts-text); overflow-wrap: anywhere; }
+.techstore-home .ts-price { margin-top: auto; padding-top: 8px; font-size: 14px; font-weight: 700; color: var(--ts-navy); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .techstore-home .ts-price span { font-size: 12px; }
 .techstore-home .ts-featured-grid,
 .techstore-home .ts-newest-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.techstore-home .ts-featured-grid .ts-product .ts-media,
 .techstore-home .ts-featured-grid .ts-product > .ts-media { height: 236px; padding: 20px; }
-.techstore-home .ts-featured-grid .ts-product-body { padding: 12px 24px 20px; }
+.techstore-home .ts-featured-grid .ts-product-body { padding: 12px 20px 20px; }
+.techstore-home .ts-newest-grid .ts-product .ts-media,
+.techstore-home .ts-newest-grid .ts-product > .ts-media { height: 200px; padding: 16px; }
+.techstore-home .ts-newest-grid .ts-product-body { padding: 12px 18px 18px; }
 .techstore-home .ts-featured-grid .ts-product h3,
-.techstore-home .ts-newest-grid .ts-product h3 { min-height: 23px; font-size: 14px; }
-.techstore-home .ts-newest-grid .ts-product { display: grid; grid-template-columns: 42% minmax(0, 1fr); align-items: center; }
-.techstore-home .ts-newest-grid .ts-product > .ts-media { height: 168px; padding: 12px; }
-.techstore-home .ts-newest-grid .ts-product-body { padding: 16px 16px 16px 0; }
+.techstore-home .ts-newest-grid .ts-product h3 { display: -webkit-box; min-height: 42px; height: 42px; margin-top: 0; margin-bottom: 6px; overflow: hidden; -webkit-line-clamp: 2; -webkit-box-orient: vertical; font-size: 14px; font-weight: 500; line-height: 1.5; color: var(--ts-text); overflow-wrap: anywhere; }
 .techstore-home .ts-catalog-section { padding-top: 30px; border-top: 1px solid var(--ts-border); }
 .techstore-home .ts-preview-label { font-size: 10px; color: var(--ts-muted); padding: 4px 9px; border: 1px solid var(--ts-border); border-radius: 4px; white-space: nowrap; }
 .techstore-home .ts-catalog-notice { margin-bottom: 16px; color: var(--ts-muted); font-size: 12px; }
@@ -248,19 +253,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 .techstore-home .ts-footer-bottom a { text-decoration: underline; text-underline-offset: 3px; }
 
 @media (max-width: 1279px) {
-    .techstore-home .ts-header-inner { gap: 16px; min-height: 80px; }
-    .techstore-home .ts-desktop-nav { display: none; }
-    .techstore-home .ts-search-link { margin-left: auto; }
-    .techstore-home .ts-mobile-menu { display: block; }
-    .techstore-home .ts-mobile-menu > summary { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; cursor: pointer; list-style: none; border-radius: 4px; }
-    .techstore-home .ts-mobile-menu .ts-menu-close { display: none; }
-    .techstore-home .ts-mobile-menu[open] .ts-menu-open { display: none; }
-    .techstore-home .ts-mobile-menu[open] .ts-menu-close { display: block; }
-    .techstore-home .ts-mobile-menu[open] > summary { background: var(--ts-background); }
-    .techstore-home .ts-mobile-menu nav { position: absolute; top: calc(100% - 2px); right: 0; z-index: 20; display: grid; width: min(360px, 100%); padding: 12px 20px; border: 1px solid var(--ts-border); border-radius: var(--ts-radius); background: #fff; box-shadow: 0 12px 24px #080f1b0d; }
-    .techstore-home .ts-mobile-menu nav a { display: flex; align-items: center; min-height: 46px; border-bottom: 1px solid var(--ts-border); font-size: 14px; }
-    .techstore-home .ts-mobile-menu nav a.is-active { color: var(--ts-blue); }
-    .techstore-home .ts-mobile-menu nav p { padding-block: 14px; color: var(--ts-muted); font-size: 11px; }
+    .techstore-home .ts-header-inner { gap: clamp(12px, 1.8vw, 24px); min-height: 80px; flex-wrap: nowrap; }
+    .techstore-home .ts-desktop-nav { display: flex; gap: clamp(10px, 1.4vw, 20px); flex-shrink: 1; min-width: 0; }
+    .techstore-home .ts-desktop-nav a { min-height: 44px; font-size: 12px; }
+    .techstore-home .ts-header-actions { gap: clamp(8px, 1.2vw, 14px); flex-shrink: 0; }
+    .techstore-home .ts-mobile-menu { display: none; }
     .techstore-home .ts-hero { min-height: 390px; }
     .techstore-home .ts-hero-copy { width: 54%; padding-left: 32px; }
     .techstore-home .ts-hero h1 { font-size: 44px; }
@@ -268,9 +265,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     .techstore-home .ts-quick-categories > a { gap: 10px; padding: 8px 12px; }
     .techstore-home .ts-quick-categories .ts-media { width: 62px; height: 64px; }
     .techstore-home .ts-product-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .techstore-home .ts-product > .ts-media { height: 200px; }
+    .techstore-home .ts-product .ts-media, .techstore-home .ts-product > .ts-media { height: 200px; }
     .techstore-home .ts-product h3 { font-size: 13px; }
-    .techstore-home .ts-newest-grid .ts-product { display: block; }
     .techstore-home .ts-newest-grid .ts-product-body { padding: 10px 16px 18px; }
     .techstore-home .ts-filters { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     .techstore-home .ts-filter-search { grid-column: 1 / -1; }
@@ -278,6 +274,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 }
 @media (max-width: 1023px) {
     .techstore-home .ts-container { width: calc(100% - 40px); }
+    .techstore-home .ts-header-inner { gap: 12px; min-height: 76px; }
+    .techstore-home .ts-desktop-nav { display: flex; gap: 10px; }
+    .techstore-home .ts-desktop-nav a { font-size: 11.5px; }
+    .techstore-home .ts-header-actions { gap: 8px; }
+    .techstore-home .ts-auth-btn { min-height: 34px; padding: 0 10px; font-size: 11px; }
+    .techstore-home .ts-mobile-menu { display: none; }
     .techstore-home .ts-hero { min-height: 360px; }
     .techstore-home .ts-hero-copy { width: 55%; padding-left: 28px; }
     .techstore-home .ts-hero h1 { font-size: 37px; letter-spacing: -1.5px; }
@@ -292,12 +294,31 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     .techstore-home .ts-category-tile > .ts-media { height: 132px; padding: 10px 16px 0; }
     .techstore-home .ts-category-caption { padding: 12px; }
     .techstore-home .ts-category-caption small { display: none; }
-    .techstore-home .ts-featured-grid .ts-product > .ts-media { height: 190px; }
+    .techstore-home .ts-featured-grid .ts-product .ts-media, .techstore-home .ts-featured-grid .ts-product > .ts-media { height: 190px; }
     .techstore-home .ts-support { gap: 24px; padding: 24px; }
     .techstore-home .ts-support h2 { font-size: 20px; }
     .techstore-home .ts-footer-main { align-items: flex-start; }
     .techstore-home .ts-footer nav { gap: 8px 20px; max-width: 260px; }
 }
+@media (max-width: 899px) {
+    .techstore-home .ts-header-inner { gap: 12px; min-height: 72px; }
+    .techstore-home .ts-desktop-nav { display: none; }
+    .techstore-home .ts-header-actions { margin-left: auto; gap: 10px; }
+    .techstore-home .ts-header-actions .ts-auth-actions { display: none; }
+    .techstore-home .ts-search-link > span { display: none; }
+    .techstore-home .ts-search-link { width: 40px; min-height: 40px; padding: 0; justify-content: center; }
+    .techstore-home .ts-mobile-menu { display: block; }
+    .techstore-home .ts-mobile-menu > summary { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; cursor: pointer; list-style: none; border-radius: 4px; }
+    .techstore-home .ts-mobile-menu .ts-menu-close { display: none; }
+    .techstore-home .ts-mobile-menu[open] .ts-menu-open { display: none; }
+    .techstore-home .ts-mobile-menu[open] .ts-menu-close { display: block; }
+    .techstore-home .ts-mobile-menu[open] > summary { background: var(--ts-background); }
+    .techstore-home .ts-mobile-menu nav { position: absolute; top: calc(100% - 2px); right: 0; z-index: 20; display: grid; width: min(360px, 100%); padding: 12px 20px; border: 1px solid var(--ts-border); border-radius: var(--ts-radius); background: #fff; box-shadow: 0 12px 24px #080f1b0d; }
+    .techstore-home .ts-mobile-menu nav a { display: flex; align-items: center; min-height: 46px; border-bottom: 1px solid var(--ts-border); font-size: 14px; }
+    .techstore-home .ts-mobile-menu nav a.is-active { color: var(--ts-blue); }
+    .techstore-home .ts-mobile-menu nav p { padding-block: 14px; color: var(--ts-muted); font-size: 11px; }
+}
+
 @media (max-width: 767px) {
     .techstore-home { font-size: 14px; }
     .techstore-home .ts-container { width: calc(100% - 32px); }
@@ -362,23 +383,22 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
         padding-bottom: 8px;
     }
     .techstore-home .ts-scroll-row > .ts-product { scroll-snap-align: start; }
-    .techstore-home .ts-product > .ts-media { height: auto; aspect-ratio: 1; padding: 10px; }
+    .techstore-home .ts-product .ts-media, .techstore-home .ts-product > .ts-media { height: auto; aspect-ratio: 1; padding: 10px; }
     .techstore-home .ts-product-body { padding: 8px 10px 14px; }
     .techstore-home .ts-product h3 { min-height: 39px; font-size: 12px; line-height: 1.6; }
     .techstore-home .ts-price { margin-top: 8px; font-size: 13px; }
     .techstore-home .ts-product-brand { font-size: 10px; }
     .techstore-home .ts-featured-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
     .techstore-home .ts-featured-grid > .ts-product:first-child { grid-column: 1 / -1; }
-    .techstore-home .ts-featured-grid .ts-product > .ts-media { height: 160px; padding: 12px; }
-    .techstore-home .ts-featured-grid > .ts-product:first-child > .ts-media { height: 210px; }
+    .techstore-home .ts-featured-grid .ts-product .ts-media, .techstore-home .ts-featured-grid .ts-product > .ts-media { height: 160px; padding: 12px; }
+    .techstore-home .ts-featured-grid > .ts-product:first-child .ts-media, .techstore-home .ts-featured-grid > .ts-product:first-child > .ts-media { height: 210px; }
     .techstore-home .ts-featured-grid .ts-product-body { padding: 8px 12px 14px; }
-    .techstore-home .ts-featured-grid .ts-product h3 { font-size: 12px; min-height: 39px; }
+    .techstore-home .ts-featured-grid .ts-product h3 { font-size: 12px; min-height: 38px; height: 38px; }
     .techstore-home .ts-featured-grid > .ts-product:first-child h3 { min-height: 20px; }
     .techstore-home .ts-newest-grid { grid-template-columns: 1fr; gap: 8px; }
-    .techstore-home .ts-newest-grid .ts-product { display: grid; grid-template-columns: 34% minmax(0, 1fr); }
-    .techstore-home .ts-newest-grid .ts-product > .ts-media { height: 128px; aspect-ratio: auto; padding: 12px; }
-    .techstore-home .ts-newest-grid .ts-product-body { padding: 12px; }
-    .techstore-home .ts-newest-grid .ts-product h3 { min-height: 0; font-size: 13px; }
+    .techstore-home .ts-newest-grid .ts-product .ts-media, .techstore-home .ts-newest-grid .ts-product > .ts-media { height: 180px; padding: 12px; }
+    .techstore-home .ts-newest-grid .ts-product-body { padding: 12px 16px 16px; }
+    .techstore-home .ts-newest-grid .ts-product h3 { min-height: 38px; height: 38px; font-size: 13px; }
     .techstore-home .ts-catalog-section { padding-top: 22px; }
     .techstore-home .ts-catalog-section .ts-section-heading { flex-wrap: wrap; gap: 8px; }
     .techstore-home .ts-catalog-notice { font-size: 11px; }
@@ -438,6 +458,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 .techstore-home .ts-product-card-link {
     display: flex;
     flex-direction: column;
+    flex: 1;
     width: 100%;
     height: 100%;
     color: inherit;
