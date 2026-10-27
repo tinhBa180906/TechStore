@@ -17,7 +17,7 @@
         </div>
         <nav aria-label="Điều hướng cuối trang">
             <a href="${pageContext.request.contextPath}/home#danh-muc">Danh mục</a>
-            <a href="${pageContext.request.contextPath}/home#san-pham">Sản phẩm</a>
+            <a href="${pageContext.request.contextPath}/products">Sản phẩm</a>
             <a href="${pageContext.request.contextPath}/home#thuong-hieu">Thương hiệu</a>
             <c:if test="${not empty sessionScope.user and sessionScope.user.role == 'ADMIN'}">
                 <a href="${pageContext.request.contextPath}/admin/products">Admin CRUD Sản phẩm</a>

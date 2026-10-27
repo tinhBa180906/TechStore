@@ -128,7 +128,7 @@
         <nav class="ts-desktop-nav" aria-label="Điều hướng chính">
             <a href="${pageContext.request.contextPath}/home"
                 class="${param.activePage == 'home' ? 'is-active' : ''}">Trang chủ</a>
-            <a href="${pageContext.request.contextPath}/home#san-pham"
+            <a href="${pageContext.request.contextPath}/products"
                 class="${param.activePage == 'products' ? 'is-active' : ''}">Sản phẩm</a>
             <a href="${pageContext.request.contextPath}/home#danh-muc">Danh mục</a>
             <a href="${pageContext.request.contextPath}/home#thuong-hieu">Thương hiệu</a>
@@ -136,7 +136,7 @@
 
         </nav>
         <div class="ts-header-actions">
-            <a class="ts-search-link" href="${pageContext.request.contextPath}/home#danh-sach"
+            <a class="ts-search-link" href="${pageContext.request.contextPath}/products"
                 aria-label="Đến khu vực tìm sản phẩm"><svg class="ts-icon" aria-hidden="true"
                     focusable="false">
                     <use href="#ts-search"></use>
@@ -222,7 +222,7 @@
                 </svg></summary>
             <nav aria-label="Điều hướng trên di động">
                 <a href="${pageContext.request.contextPath}/home">Trang chủ</a>
-                <a href="${pageContext.request.contextPath}/home#san-pham">Sản phẩm</a>
+                <a href="${pageContext.request.contextPath}/products">Sản phẩm</a>
                 <a href="${pageContext.request.contextPath}/home#danh-muc">Danh mục</a>
                 <a href="${pageContext.request.contextPath}/home#thuong-hieu">Thương hiệu</a>
                 <a href="${pageContext.request.contextPath}/home#moi-nhat">Mới nhất</a>
