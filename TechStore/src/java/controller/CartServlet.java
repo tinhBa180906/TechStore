@@ -18,12 +18,6 @@ public class CartServlet extends HttpServlet {
             HttpServletResponse resp) throws ServletException, IOException {
         OrderSupport.prepare(req, resp);
         OrderSupport.cartView(req);
-        try (OrderDAO dao = new OrderDAO()) {
-            req.setAttribute("products", dao.getCartProducts());
-        } catch (SQLException e) {
-            getServletContext().log("Cannot load cart products", e);
-            req.setAttribute("errorMessage", "Chưa thể tải sản phẩm. Vui lòng thử lại.");
-        }
         req.getRequestDispatcher("/WEB-INF/views/cart.jsp").forward(req, resp);
     }
 
