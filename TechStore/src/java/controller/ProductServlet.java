@@ -15,12 +15,13 @@ import model.Brand;
 import model.Category;
 import model.Product;
 
-@WebServlet(name = "ProductServlet", urlPatterns = {"/home", "/product-detail", "/products"})
+@WebServlet(name = "ProductServlet", urlPatterns = {"/home", "/product-detail", "/products", "/search"})
 public class ProductServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
     private static final int PAGE_SIZE = 10;
     private static final String HOME_VIEW = "/WEB-INF/views/home.jsp";
+    private static final String PRODUCTS_VIEW = "/WEB-INF/views/products.jsp";
     private static final String DETAIL_VIEW = "/WEB-INF/views/product-detail.jsp";
 
     @Override
@@ -32,8 +33,19 @@ public class ProductServlet extends HttpServlet {
         String servletPath = request.getServletPath();
         if ("/product-detail".equalsIgnoreCase(servletPath)) {
             handleProductDetail(request, response);
+        } else if ("/products".equalsIgnoreCase(servletPath) || "/search".equalsIgnoreCase(servletPath)) {
+            handleSearch(request, response);
         } else {
-            handleCatalog(request, response);
+            String keyword = request.getParameter("q");
+            String cat = request.getParameter("category");
+            String brand = request.getParameter("brand");
+            String price = request.getParameter("price");
+            if (keyword != null || cat != null || brand != null || price != null) {
+                String qs = request.getQueryString();
+                response.sendRedirect(request.getContextPath() + "/products" + (qs != null ? "?" + qs : ""));
+                return;
+            }
+            handleHome(request, response);
         }
     }
 
@@ -70,12 +82,39 @@ public class ProductServlet extends HttpServlet {
         }
     }
 
-    private void handleCatalog(HttpServletRequest request, HttpServletResponse response)
+    private void handleHome(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        List<Product> featuredProducts = List.of();
+        List<Product> bestSellingProducts = List.of();
+        List<Product> newProducts = List.of();
+        List<Category> categories = List.of();
+        List<Brand> brands = List.of();
+
+        try (ProductDAO dao = new ProductDAO()) {
+            categories = dao.getAllCategories();
+            brands = dao.getAllBrands();
+            featuredProducts = dao.getFeaturedProducts(3);
+            bestSellingProducts = dao.getBestSellingProducts(6);
+            newProducts = dao.getNewProducts(3);
+        } catch (SQLException exception) {
+            getServletContext().log("Unable to load home page products.", exception);
+            response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+            request.setAttribute("dataLoadError", "Hiện chưa thể tải sản phẩm. Vui lòng thử lại sau.");
+            request.getRequestDispatcher(HOME_VIEW).forward(request, response);
+            return;
+        }
+
+        request.setAttribute("featuredProducts", featuredProducts);
+        request.setAttribute("bestSellingProducts", bestSellingProducts);
+        request.setAttribute("newProducts", newProducts);
+        request.setAttribute("categories", categories);
+        request.setAttribute("brands", brands);
+        request.getRequestDispatcher(HOME_VIEW).forward(request, response);
+    }
+
+    private void handleSearch(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setAttribute("products", List.of());
-        request.setAttribute("featuredProducts", List.of());
-        request.setAttribute("bestSellingProducts", List.of());
-        request.setAttribute("newProducts", List.of());
         request.setAttribute("categories", List.of());
         request.setAttribute("brands", List.of());
         request.setAttribute("pageNumbers", List.of());
@@ -90,7 +129,9 @@ public class ProductServlet extends HttpServlet {
         String keyword = request.getParameter("q");
         if (keyword != null) {
             keyword = keyword.trim();
-            if (keyword.isEmpty()) keyword = null;
+            if (keyword.isEmpty()) {
+                keyword = null;
+            }
         }
 
         Integer categoryId = parseInteger(request.getParameter("category"));
@@ -118,9 +159,6 @@ public class ProductServlet extends HttpServlet {
         long totalPages;
         long currentPage;
         List<Product> products;
-        List<Product> featuredProducts;
-        List<Product> bestSellingProducts;
-        List<Product> newProducts;
         List<Category> categories;
         List<Brand> brands;
 
@@ -134,22 +172,15 @@ public class ProductServlet extends HttpServlet {
 
             products = totalProducts == 0 ? List.of()
                     : dao.getFilteredProducts(keyword, categoryId, brandId, minPrice, maxPrice, sort, currentPage, PAGE_SIZE);
-
-            featuredProducts = dao.getFeaturedProducts(3);
-            bestSellingProducts = dao.getBestSellingProducts(6);
-            newProducts = dao.getNewProducts(3);
         } catch (SQLException exception) {
-            getServletContext().log("Unable to load the public product catalog.", exception);
+            getServletContext().log("Unable to load product search catalog.", exception);
             response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
-            request.setAttribute("dataLoadError", "Hiện chưa thể tải sản phẩm. Vui lòng thử lại sau.");
-            request.getRequestDispatcher(HOME_VIEW).forward(request, response);
+            request.setAttribute("dataLoadError", "Hiện chưa thể tải danh sách tìm kiếm sản phẩm. Vui lòng thử lại sau.");
+            request.getRequestDispatcher(PRODUCTS_VIEW).forward(request, response);
             return;
         }
 
         request.setAttribute("products", products);
-        request.setAttribute("featuredProducts", featuredProducts);
-        request.setAttribute("bestSellingProducts", bestSellingProducts);
-        request.setAttribute("newProducts", newProducts);
         request.setAttribute("categories", categories);
         request.setAttribute("brands", brands);
 
@@ -174,14 +205,16 @@ public class ProductServlet extends HttpServlet {
             pageNumbers.add(page);
         }
         request.setAttribute("pageNumbers", pageNumbers);
-        request.getRequestDispatcher(HOME_VIEW).forward(request, response);
+        request.getRequestDispatcher(PRODUCTS_VIEW).forward(request, response);
     }
 
     private Integer parseInteger(String parameter) {
         if (parameter != null && !parameter.trim().isEmpty()) {
             try {
                 int val = Integer.parseInt(parameter.trim());
-                if (val > 0) return val;
+                if (val > 0) {
+                    return val;
+                }
             } catch (NumberFormatException ignored) {
             }
         }

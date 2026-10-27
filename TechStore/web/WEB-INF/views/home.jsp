@@ -71,7 +71,7 @@
                                 </svg><span>Thanh toán COD</span></div>
                         </div>
                         <nav class="ts-quick-categories" aria-label="Khám phá nhanh danh mục">
-                            <a href="#danh-sach"><span class="ts-media "><img
+                            <a href="${pageContext.request.contextPath}/products?category=1"><span class="ts-media "><img
                                         src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-pro-max-bluetitanium-select?wid=500&amp;hei=500&amp;fmt=png-alpha"
                                         alt="Điện thoại" width="500" height="500" loading="lazy" decoding="async"><span
                                         class="ts-image-fallback" hidden><svg class="ts-icon " aria-hidden="true"
@@ -82,7 +82,7 @@
                                             focusable="false">
                                             <use href="#ts-arrow"></use>
                                         </svg></small></span></a>
-                            <a href="#danh-sach"><span class="ts-media "><img
+                            <a href="${pageContext.request.contextPath}/products?category=2"><span class="ts-media "><img
                                         src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/macbook-air-midnight-gallery1-20220606?wid=800&amp;hei=616&amp;fmt=png-alpha"
                                         alt="Laptop" width="500" height="500" loading="lazy" decoding="async"><span
                                         class="ts-image-fallback" hidden><svg class="ts-icon " aria-hidden="true"
@@ -93,7 +93,7 @@
                                             class="ts-icon " aria-hidden="true" focusable="false">
                                             <use href="#ts-arrow"></use>
                                         </svg></small></span></a>
-                            <a href="#danh-sach"><span class="ts-media "><img
+                            <a href="${pageContext.request.contextPath}/products?category=3"><span class="ts-media "><img
                                         src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MTJV3?wid=400&amp;hei=400&amp;fmt=png-alpha"
                                         alt="Phụ kiện" width="500" height="500" loading="lazy" decoding="async"><span
                                         class="ts-image-fallback" hidden><svg class="ts-icon " aria-hidden="true"
@@ -104,7 +104,7 @@
                                             focusable="false">
                                             <use href="#ts-arrow"></use>
                                         </svg></small></span></a>
-                            <a href="#danh-sach"><span class="ts-media "><img
+                            <a href="${pageContext.request.contextPath}/products?category=4"><span class="ts-media "><img
                                         src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/studio-display-gallery-1-202203?wid=600&amp;hei=600&amp;fmt=png-alpha"
                                         alt="Màn hình" width="500" height="500" loading="lazy" decoding="async"><span
                                         class="ts-image-fallback" hidden><svg class="ts-icon " aria-hidden="true"
@@ -120,14 +120,13 @@
                         <section class="ts-section ts-category-section" id="danh-muc"
                             aria-labelledby="ts-categories-title">
                             <div class="ts-section-heading">
-                                <h2 id="ts-categories-title">Danh mục phổ biến</h2><a class="ts-text-link"
-                                    href="#danh-sach">Xem sản phẩm <svg class="ts-icon " aria-hidden="true"
+                                <h2 id="ts-categories-title">Danh mục phổ biến</h2><a class="ts-text-link" href="${pageContext.request.contextPath}/products">Xem sản phẩm <svg class="ts-icon " aria-hidden="true"
                                         focusable="false">
                                         <use href="#ts-arrow"></use>
                                     </svg></a>
                             </div>
                             <div class="ts-category-grid">
-                                <a class="ts-category-tile" href="#danh-sach">
+                                <a class="ts-category-tile" href="${pageContext.request.contextPath}/products?category=1">
                                     <span class="ts-media "><img
                                             src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-pro-max-bluetitanium-select?wid=500&amp;hei=500&amp;fmt=png-alpha"
                                             alt="Điện thoại" width="500" height="500" loading="lazy"
@@ -141,7 +140,7 @@
                                             <use href="#ts-arrow"></use>
                                         </svg></span>
                                 </a>
-                                <a class="ts-category-tile" href="#danh-sach">
+                                <a class="ts-category-tile" href="${pageContext.request.contextPath}/products?category=2">
                                     <span class="ts-media "><img
                                             src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/macbook-air-midnight-gallery1-20220606?wid=800&amp;hei=616&amp;fmt=png-alpha"
                                             alt="Laptop" width="500" height="500" loading="lazy" decoding="async"><span
@@ -155,7 +154,7 @@
                                             <use href="#ts-arrow"></use>
                                         </svg></span>
                                 </a>
-                                <a class="ts-category-tile" href="#danh-sach">
+                                <a class="ts-category-tile" href="${pageContext.request.contextPath}/products?category=3">
                                     <span class="ts-media "><img
                                             src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MTJV3?wid=400&amp;hei=400&amp;fmt=png-alpha"
                                             alt="Phụ kiện" width="500" height="500" loading="lazy"
@@ -169,7 +168,7 @@
                                             <use href="#ts-arrow"></use>
                                         </svg></span>
                                 </a>
-                                <a class="ts-category-tile" href="#danh-sach">
+                                <a class="ts-category-tile" href="${pageContext.request.contextPath}/products?category=4">
                                     <span class="ts-media "><img
                                             src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/studio-display-gallery-1-202203?wid=600&amp;hei=600&amp;fmt=png-alpha"
                                             alt="Màn hình" width="500" height="500" loading="lazy"
@@ -205,7 +204,7 @@
                                             <h2 id="ts-bestsellers-title">Sản phẩm bán chạy</h2>
                                             <p>Được lựa chọn qua các đơn hàng đã hoàn thành.</p>
                                         </div>
-                                        <a class="ts-text-link" href="#danh-sach">Xem tất cả <svg class="ts-icon "
+                                        <a class="ts-text-link" href="${pageContext.request.contextPath}/products?sort=bestselling">Xem tất cả <svg class="ts-icon "
                                                 aria-hidden="true" focusable="false">
                                                 <use href="#ts-arrow"></use>
                                             </svg></a>
@@ -272,7 +271,7 @@
                                             <h2 id="ts-featured-title">Lựa chọn nổi bật</h2>
                                             <p>Thiết bị cho những ý tưởng và trải nghiệm mới.</p>
                                         </div>
-                                        <a class="ts-text-link" href="#danh-sach">Khám phá thêm <svg class="ts-icon "
+                                        <a class="ts-text-link" href="${pageContext.request.contextPath}/products">Khám phá thêm <svg class="ts-icon "
                                                 aria-hidden="true" focusable="false">
                                                 <use href="#ts-arrow"></use>
                                             </svg></a>
@@ -336,7 +335,7 @@
                                             <h2 id="ts-newest-title">Mới nhất</h2>
                                             <p>Các sản phẩm được thêm gần đây nhất.</p>
                                         </div>
-                                        <a class="ts-text-link" href="#danh-sach">Xem bộ sưu tập <svg class="ts-icon "
+                                        <a class="ts-text-link" href="${pageContext.request.contextPath}/products?sort=newest">Xem bộ sưu tập <svg class="ts-icon "
                                                 aria-hidden="true" focusable="false">
                                                 <use href="#ts-arrow"></use>
                                             </svg></a>
@@ -396,310 +395,6 @@
                                 </section>
                             </c:if>
                         </div>
-
-                        <section class="ts-section ts-catalog-section" id="danh-sach"
-                            aria-labelledby="ts-catalog-title">
-                            <div class="ts-section-heading">
-                                <div>
-                                    <h2 id="ts-catalog-title">Khám phá sản phẩm</h2>
-                                    <p>Tìm thiết bị phù hợp với cách bạn sống và làm việc.</p>
-                                </div>
-                                <c:if test="${empty dataLoadError}"><span class="ts-preview-label">
-                                        <fmt:formatNumber value="${totalProducts}" maxFractionDigits="0" /> sản phẩm
-                                    </span></c:if>
-                            </div>
-
-                            <!-- Active Search & Filter Toolbar -->
-                            <c:if test="${empty dataLoadError}">
-                                <form class="ts-filters" id="ts-filter-form"
-                                    action="${pageContext.request.contextPath}/home" method="get">
-                                    <div class="ts-filter ts-filter-search">
-                                        <label for="ts-search-input">Tên sản phẩm</label>
-                                        <div class="ts-input-icon">
-                                            <svg class="ts-icon" aria-hidden="true" focusable="false">
-                                                <use href="#ts-search"></use>
-                                            </svg>
-                                            <input id="ts-search-input" name="q" type="search"
-                                                placeholder="Bạn đang tìm gì?" value="${fn:escapeXml(currentKeyword)}">
-                                        </div>
-                                    </div>
-                                    <div class="ts-filter">
-                                        <label for="ts-category">Danh mục</label>
-                                        <select id="ts-category" name="category" onchange="this.form.submit()">
-                                            <option value="0">Tất cả danh mục</option>
-                                            <c:forEach var="cat" items="${categories}">
-                                                <option value="${cat.categoryId}" ${selectedCategory==cat.categoryId
-                                                    ? 'selected' : '' }>
-                                                    <c:out value="${cat.categoryName}" />
-                                                </option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-                                    <div class="ts-filter">
-                                        <label for="ts-brand">Thương hiệu</label>
-                                        <select id="ts-brand" name="brand" onchange="this.form.submit()">
-                                            <option value="0">Tất cả thương hiệu</option>
-                                            <c:forEach var="br" items="${brands}">
-                                                <option value="${br.brandId}" ${selectedBrand==br.brandId ? 'selected'
-                                                    : '' }>
-                                                    <c:out value="${br.brandName}" />
-                                                </option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-                                    <div class="ts-filter">
-                                        <label for="ts-price">Khoảng giá</label>
-                                        <select id="ts-price" name="price" onchange="this.form.submit()">
-                                            <option value="all" ${selectedPrice=='all' ? 'selected' : '' }>Tất cả mức
-                                                giá</option>
-                                            <option value="under10" ${selectedPrice=='under10' ? 'selected' : '' }>Dưới
-                                                10 triệu</option>
-                                            <option value="10to20" ${selectedPrice=='10to20' ? 'selected' : '' }>10–20
-                                                triệu</option>
-                                            <option value="above20" ${selectedPrice=='above20' ? 'selected' : '' }>Trên
-                                                20 triệu</option>
-                                        </select>
-                                    </div>
-                                    <div class="ts-filter">
-                                        <label for="ts-sort">Sắp xếp</label>
-                                        <select id="ts-sort" name="sort" onchange="this.form.submit()">
-                                            <option value="newest" ${selectedSort=='newest' ? 'selected' : '' }>Mới nhất
-                                            </option>
-                                            <option value="price-asc" ${selectedSort=='price-asc' ? 'selected' : '' }>
-                                                Giá tăng dần</option>
-                                            <option value="price-desc" ${selectedSort=='price-desc' ? 'selected' : '' }>
-                                                Giá giảm dần</option>
-                                            <option value="bestselling" ${selectedSort=='bestselling' ? 'selected' : ''
-                                                }>Bán chạy nhất</option>
-                                            <option value="name-asc" ${selectedSort=='name-asc' ? 'selected' : '' }>Tên
-                                                A-Z</option>
-                                        </select>
-                                    </div>
-                                    <div class="ts-filter-actions-row">
-                                        <button type="submit" class="ts-button ts-button-primary"><svg class="ts-icon"
-                                                aria-hidden="true" focusable="false">
-                                                <use href="#ts-search"></use>
-                                            </svg> Tìm kiếm</button>
-                                        <c:if
-                                            test="${not empty currentKeyword or selectedCategory > 0 or selectedBrand > 0 or (not empty selectedPrice and selectedPrice != 'all')}">
-                                            <a href="${pageContext.request.contextPath}/home#danh-sach"
-                                                class="ts-button ts-button-outline">Xóa bộ lọc</a>
-                                        </c:if>
-                                    </div>
-                                </form>
-                            </c:if>
-
-                            <c:choose>
-                                <c:when test="${not empty dataLoadError}">
-                                    <p class="ts-empty-state">Danh sách sản phẩm tạm thời chưa khả dụng. Vui lòng tải
-                                        lại sản phẩm ở phía trên.</p>
-                                </c:when>
-                                <c:otherwise>
-                                    <c:choose>
-                                        <c:when test="${not empty products}">
-                                            <div class="ts-product-grid ts-catalog-grid">
-                                                <c:forEach var="product" items="${products}">
-                                                    <article class="ts-product" data-product-id="${product.productId}">
-                                                    <a href="${pageContext.request.contextPath}/product-detail?id=${product.productId}" class="ts-product-card-link"
-                                                    aria-label="Xem chi tiết ${fn:escapeXml(product.productName)}">
-                                                    <span class="ts-media">
-                                                        <c:set var="imagePath" value="${fn:trim(product.imageUrl)}" />
-                                                        <c:set var="imageScheme" value="${fn:toLowerCase(imagePath)}" />
-                                                        <c:choose>
-                                                            <c:when
-                                                                test="${not empty imagePath and (fn:startsWith(imageScheme, 'https://') or fn:startsWith(imageScheme, 'http://') or (not fn:contains(imagePath, ':') and not fn:startsWith(imagePath, '//')))}">
-                                                                <c:url var="productImageUrl" value="${imagePath}" />
-                                                                <img src="${productImageUrl}" alt="${fn:escapeXml(product.productName)}" width="500"
-                                                                height="500" loading="lazy" decoding="async">
-                                                                <span class="ts-image-fallback" hidden><svg
-                                                                        class="ts-icon" aria-hidden="true"
-                                                                        focusable="false">
-                                                                        <use href="#ts-image"></use>
-                                                                    </svg><span>Ảnh đang cập nhật</span></span>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <span class="ts-image-fallback"><svg class="ts-icon"
-                                                                        aria-hidden="true" focusable="false">
-                                                                        <use href="#ts-image"></use>
-                                                                    </svg><span>Ảnh đang cập nhật</span></span>
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                                    </span>
-                                                    <div class="ts-product-body">
-                                                        <p class="ts-product-brand">
-                                                            <c:out value="${product.brandName}" />
-                                                        </p>
-                                                        <h3>
-                                                            <c:out value="${product.productName}" />
-                                                        </h3>
-                                                        <p class="ts-price">
-                                                            <fmt:formatNumber value="${product.price}" type="currency"
-                                                                currencyCode="VND" minFractionDigits="0"
-                                                                maxFractionDigits="0" />
-                                                        </p>
-                                                    </div>
-                                                    </a>
-                                                    </article>
-                                                </c:forEach>
-                                            </div>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <p class="ts-empty-state">Hiện không có sản phẩm nào phù hợp với bộ lọc tìm
-                                                kiếm của bạn.</p>
-                                        </c:otherwise>
-                                    </c:choose>
-                                    <c:if test="${not empty products}">
-                                        <p class="ts-catalog-summary" role="status">Hiển thị
-                                            <fmt:formatNumber value="${firstProduct}" maxFractionDigits="0" />–
-                                            <fmt:formatNumber value="${lastProduct}" maxFractionDigits="0" /> trong
-                                            <fmt:formatNumber value="${totalProducts}" maxFractionDigits="0" /> sản phẩm
-                                            · Trang
-                                            <fmt:formatNumber value="${currentPage}" maxFractionDigits="0" />/
-                                            <fmt:formatNumber value="${totalPages}" maxFractionDigits="0" />
-                                        </p>
-                                    </c:if>
-                                    <c:if test="${totalPages gt 1}">
-                                        <nav class="ts-pagination" aria-label="Phân trang sản phẩm">
-                                            <c:choose>
-                                                <c:when test="${currentPage gt 1}">
-                                                    <c:url var="firstPageUrl" value="/home">
-                                                        <c:if test="${not empty currentKeyword}">
-                                                            <c:param name="q" value="${currentKeyword}" />
-                                                        </c:if>
-                                                        <c:if test="${selectedCategory > 0}">
-                                                            <c:param name="category" value="${selectedCategory}" />
-                                                        </c:if>
-                                                        <c:if test="${selectedBrand > 0}">
-                                                            <c:param name="brand" value="${selectedBrand}" />
-                                                        </c:if>
-                                                        <c:if
-                                                            test="${not empty selectedPrice and selectedPrice != 'all'}">
-                                                            <c:param name="price" value="${selectedPrice}" />
-                                                        </c:if>
-                                                        <c:if
-                                                            test="${not empty selectedSort and selectedSort != 'newest'}">
-                                                            <c:param name="sort" value="${selectedSort}" />
-                                                        </c:if>
-                                                        <c:param name="page" value="1" />
-                                                    </c:url>
-                                                    <c:url var="previousPageUrl" value="/home">
-                                                        <c:if test="${not empty currentKeyword}">
-                                                            <c:param name="q" value="${currentKeyword}" />
-                                                        </c:if>
-                                                        <c:if test="${selectedCategory > 0}">
-                                                            <c:param name="category" value="${selectedCategory}" />
-                                                        </c:if>
-                                                        <c:if test="${selectedBrand > 0}">
-                                                            <c:param name="brand" value="${selectedBrand}" />
-                                                        </c:if>
-                                                        <c:if
-                                                            test="${not empty selectedPrice and selectedPrice != 'all'}">
-                                                            <c:param name="price" value="${selectedPrice}" />
-                                                        </c:if>
-                                                        <c:if
-                                                            test="${not empty selectedSort and selectedSort != 'newest'}">
-                                                            <c:param name="sort" value="${selectedSort}" />
-                                                        </c:if>
-                                                        <c:param name="page" value="${currentPage - 1}" />
-                                                    </c:url>
-                                                    <a class="ts-page-link" href="${firstPageUrl}#danh-sach" aria-label="Trang đầu">Đầu</a>
-                                                    <a class="ts-page-link" href="${previousPageUrl}#danh-sach" aria-label="Trang trước"
-                                                    rel="prev">Trước</a>
-                                                </c:when>
-                                                <c:otherwise><span class="ts-page-link is-disabled"
-                                                        aria-disabled="true">Đầu</span><span
-                                                        class="ts-page-link is-disabled"
-                                                        aria-disabled="true">Trước</span></c:otherwise>
-                                            </c:choose>
-                                            <c:forEach var="pageNumber" items="${pageNumbers}">
-                                                <c:choose>
-                                                    <c:when test="${pageNumber eq currentPage}"><span
-                                                            class="ts-page-link is-current" aria-current="page"
-                                                            aria-label="Trang ${pageNumber}">
-                                                        <c:out value="${pageNumber}" /></span>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <c:url var="pageUrl" value="/home">
-                                                            <c:if test="${not empty currentKeyword}">
-                                                                <c:param name="q" value="${currentKeyword}" />
-                                                            </c:if>
-                                                            <c:if test="${selectedCategory > 0}">
-                                                                <c:param name="category" value="${selectedCategory}" />
-                                                            </c:if>
-                                                            <c:if test="${selectedBrand > 0}">
-                                                                <c:param name="brand" value="${selectedBrand}" />
-                                                            </c:if>
-                                                            <c:if
-                                                                test="${not empty selectedPrice and selectedPrice != 'all'}">
-                                                                <c:param name="price" value="${selectedPrice}" />
-                                                            </c:if>
-                                                            <c:if
-                                                                test="${not empty selectedSort and selectedSort != 'newest'}">
-                                                                <c:param name="sort" value="${selectedSort}" />
-                                                            </c:if>
-                                                            <c:param name="page" value="${pageNumber}" />
-                                                        </c:url>
-                                                        <a class="ts-page-link" href="${pageUrl}#danh-sach" aria-label="Trang ${pageNumber}">
-                                                        <c:out value="${pageNumber}" /></a>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </c:forEach>
-                                            <c:choose>
-                                                <c:when test="${currentPage lt totalPages}">
-                                                    <c:url var="nextPageUrl" value="/home">
-                                                        <c:if test="${not empty currentKeyword}">
-                                                            <c:param name="q" value="${currentKeyword}" />
-                                                        </c:if>
-                                                        <c:if test="${selectedCategory > 0}">
-                                                            <c:param name="category" value="${selectedCategory}" />
-                                                        </c:if>
-                                                        <c:if test="${selectedBrand > 0}">
-                                                            <c:param name="brand" value="${selectedBrand}" />
-                                                        </c:if>
-                                                        <c:if
-                                                            test="${not empty selectedPrice and selectedPrice != 'all'}">
-                                                            <c:param name="price" value="${selectedPrice}" />
-                                                        </c:if>
-                                                        <c:if
-                                                            test="${not empty selectedSort and selectedSort != 'newest'}">
-                                                            <c:param name="sort" value="${selectedSort}" />
-                                                        </c:if>
-                                                        <c:param name="page" value="${currentPage + 1}" />
-                                                    </c:url>
-                                                    <c:url var="lastPageUrl" value="/home">
-                                                        <c:if test="${not empty currentKeyword}">
-                                                            <c:param name="q" value="${currentKeyword}" />
-                                                        </c:if>
-                                                        <c:if test="${selectedCategory > 0}">
-                                                            <c:param name="category" value="${selectedCategory}" />
-                                                        </c:if>
-                                                        <c:if test="${selectedBrand > 0}">
-                                                            <c:param name="brand" value="${selectedBrand}" />
-                                                        </c:if>
-                                                        <c:if
-                                                            test="${not empty selectedPrice and selectedPrice != 'all'}">
-                                                            <c:param name="price" value="${selectedPrice}" />
-                                                        </c:if>
-                                                        <c:if
-                                                            test="${not empty selectedSort and selectedSort != 'newest'}">
-                                                            <c:param name="sort" value="${selectedSort}" />
-                                                        </c:if>
-                                                        <c:param name="page" value="${totalPages}" />
-                                                    </c:url>
-                                                    <a class="ts-page-link" href="${nextPageUrl}#danh-sach" aria-label="Trang tiếp"
-                                                    rel="next">Tiếp</a>
-                                                    <a class="ts-page-link" href="${lastPageUrl}#danh-sach" aria-label="Trang cuối">Cuối</a>
-                                                </c:when>
-                                                <c:otherwise><span class="ts-page-link is-disabled"
-                                                        aria-disabled="true">Tiếp</span><span
-                                                        class="ts-page-link is-disabled"
-                                                        aria-disabled="true">Cuối</span></c:otherwise>
-                                            </c:choose>
-                                        </nav>
-                                    </c:if>
-                                </c:otherwise>
-                            </c:choose>
-                        </section>
                         <section class="ts-brands ts-section" id="thuong-hieu" aria-labelledby="ts-brands-title">
                             <div class="ts-section-heading">
                                 <h2 id="ts-brands-title">Thương hiệu trong bộ sưu tập</h2>
