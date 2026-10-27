@@ -133,13 +133,7 @@
             <a href="${pageContext.request.contextPath}/home#danh-muc">Danh mục</a>
             <a href="${pageContext.request.contextPath}/home#thuong-hieu">Thương hiệu</a>
             <a href="${pageContext.request.contextPath}/home#moi-nhat">Mới nhất</a>
-            <c:if test="${not empty sessionScope.user and sessionScope.user.role == 'ADMIN'}">
-                <a href="${pageContext.request.contextPath}/admin/products"
-                    class="ts-nav-admin-link ${param.activePage == 'admin' ? 'is-active' : ''}"><svg
-                        class="ts-icon" aria-hidden="true" focusable="false">
-                        <use href="#ts-edit"></use>
-                    </svg> Admin CRUD</a>
-            </c:if>
+
         </nav>
         <div class="ts-header-actions">
             <a class="ts-search-link" href="${pageContext.request.contextPath}/home#danh-sach"
@@ -198,7 +192,7 @@
                             <c:if test="${sessionScope.user.role == 'ADMIN'}">
                                 <a href="${pageContext.request.contextPath}/admin/products" class="ts-profile-menu-item">
                                     <svg class="ts-icon" aria-hidden="true" focusable="false"><use href="#ts-edit"></use></svg>
-                                    <span>Quản lý sản phẩm (CRUD)</span>
+                                    <span>Quản lý sản phẩm</span>
                                 </a>
                                 <a href="${pageContext.request.contextPath}/admin/users" class="ts-profile-menu-item">
                                     <svg class="ts-icon" aria-hidden="true" focusable="false"><use href="#ts-user"></use></svg>
@@ -233,9 +227,7 @@
                 <a href="${pageContext.request.contextPath}/home#thuong-hieu">Thương hiệu</a>
                 <a href="${pageContext.request.contextPath}/home#moi-nhat">Mới nhất</a>
                 <a href="${pageContext.request.contextPath}/cart">Giỏ hàng (${cartCount})</a>
-                <c:if test="${not empty sessionScope.user and sessionScope.user.role == 'ADMIN'}">
-                    <a href="${pageContext.request.contextPath}/admin/products">Admin CRUD Sản phẩm</a>
-                </c:if>
+
                 <c:choose>
                     <c:when test="${empty sessionScope.user}">
                         <a href="${pageContext.request.contextPath}/login">Đăng nhập</a>
