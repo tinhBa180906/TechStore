@@ -104,6 +104,7 @@
 
                     <!-- Purchasing Action Form -->
                     <form action="${pageContext.request.contextPath}/cart" method="post" class="ts-purchase-form">
+                        <input type="hidden" name="csrf" value="${sessionScope.orderCsrf}">
                         <input type="hidden" name="action" value="add">
                         <input type="hidden" name="productId" value="${product.productId}">
 

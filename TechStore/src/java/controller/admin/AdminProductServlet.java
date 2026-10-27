@@ -95,22 +95,11 @@ public class AdminProductServlet extends HttpServlet {
     }
 
     private boolean checkAdminAuth(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpSession session = request.getSession(true);
-
-        // Dev/Testing helper: support instant admin login via dev parameter
-        if ("1".equals(request.getParameter("dev_admin"))) {
-            Account devAdmin = new Account();
-            devAdmin.setAccountId(1);
-            devAdmin.setUserName("admin");
-            devAdmin.setRole("ADMIN");
-            devAdmin.setIsActive(true);
-            session.setAttribute("user", devAdmin);
-        }
-
-        Account user = (Account) session.getAttribute("user");
+        HttpSession session = request.getSession(false);
+        Account user = (session != null) ? (Account) session.getAttribute("user") : null;
         if (user == null || !"ADMIN".equalsIgnoreCase(user.getRole())) {
-            // Store target URL and redirect to login
-            response.sendRedirect(request.getContextPath() + "/login.jsp?error=login_required");
+            // Redirect to login when user is not authenticated as ADMIN
+            response.sendRedirect(request.getContextPath() + "/login?error=login_required");
             return false;
         }
         return true;
