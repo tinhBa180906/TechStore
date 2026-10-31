@@ -214,7 +214,7 @@
                                             <a href="${pageContext.request.contextPath}/admin/products?action=toggle&id=${p.productId}" class="ts-action-btn ts-btn-toggle" title="${p.active ? 'Tắt kích hoạt (Ngừng bán)' : 'Bật kích hoạt (Mở bán)'}">
                                                 <svg class="ts-icon" aria-hidden="true" focusable="false"><use href="#ts-check"></use></svg>
                                             </a>
-                                            <a href="${pageContext.request.contextPath}/admin/products?action=delete&id=${p.productId}" onclick="return confirm('Bạn có chắc chắn muốn xóa/ngưng kinh doanh sản phẩm \'${p.productName}\'?')" class="ts-action-btn ts-btn-delete" title="Xóa hoặc ngưng kinh doanh">
+                                            <a href="${pageContext.request.contextPath}/admin/products?action=delete&id=${p.productId}" onclick="return confirm('Bạn có chắc chắn muốn thực hiện thao tác với sản phẩm: ${fn:escapeXml(p.productName)}?');" class="ts-action-btn ts-btn-delete" title="Xóa hoặc ngưng kinh doanh">
                                                 <svg class="ts-icon" aria-hidden="true" focusable="false"><use href="#ts-trash"></use></svg>
                                             </a>
                                         </div>
