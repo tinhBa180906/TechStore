@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AccountDAO extends DBContext {
+public class AccountDAO extends DBContext implements AutoCloseable {
 
     public Account getAccountByUsername(String username) {
         String sql = "SELECT ua.AccountID, ua.CustomerID, ua.Username, ua.Email, ua.PasswordHash, ua.Role, ua.IsActive, "
@@ -182,6 +182,13 @@ public class AccountDAO extends DBContext {
             System.out.println("Lỗi updateCustomerProfile: " + e.getMessage());
         }
         return false;
+    }
+
+    @Override
+    public void close() throws Exception {
+        if (connection != null && !connection.isClosed()) {
+            connection.close();
+        }
     }
 
 }
