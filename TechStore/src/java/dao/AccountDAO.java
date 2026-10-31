@@ -64,64 +64,64 @@ public class AccountDAO extends DBContext implements AutoCloseable {
     }
 
     public boolean registerNewCustomer(String username, String email, String passwordHash,
-            String fullname, String phone, String defaultAddress) {
-        String sqlCustomer = "INSERT INTO dbo.Customer (FullName, Phone, DefaultAddress) VALUES (?, ?, ?)";
-        String sqlAccount = "INSERT INTO dbo.UserAccount (CustomerID, Username, Email, PasswordHash, Role) VALUES (?, ?, ?, ?, 'CUSTOMER')";
-        PreparedStatement stCustomer = null;
-        PreparedStatement stAccount = null;
-        ResultSet rsGeneratedKeys = null;
-        boolean isSuccess = false;
-        try {
-            connection.setAutoCommit(false);
+        String fullname, String phone, String defaultAddress) {
+    String sqlCustomer = "INSERT INTO dbo.Customer (FullName, Phone, DefaultAddress) VALUES (?, ?, ?)";
+    String sqlAccount = "INSERT INTO dbo.UserAccount (CustomerID, Username, Email, PasswordHash, Role) VALUES (?, ?, ?, ?, 'CUSTOMER')";
+    PreparedStatement stCustomer = null;
+    PreparedStatement stAccount = null;
+    ResultSet rsGeneratedKeys = null;
+    boolean isSuccess = false;
 
-            stCustomer = connection.prepareStatement(sqlCustomer, Statement.RETURN_GENERATED_KEYS);
-            stCustomer.setNString(1, fullname);
-            stCustomer.setString(2, phone);
-            stCustomer.setNString(3, defaultAddress);
-            stCustomer.executeUpdate();
-            rsGeneratedKeys = stCustomer.getGeneratedKeys();
-            if (rsGeneratedKeys.next()) {
-                int newCustomerID = rsGeneratedKeys.getInt(1);
+    try {
+        connection.setAutoCommit(false);
 
-                stAccount = connection.prepareStatement(sqlAccount);
-                stAccount.setInt(1, newCustomerID);
-                stAccount.setString(2, username);
-                stAccount.setString(3, email);
-                stAccount.setString(4, passwordHash);
+        stCustomer = connection.prepareStatement(sqlCustomer, Statement.RETURN_GENERATED_KEYS);
+        stCustomer.setString(1, fullname);
+        stCustomer.setString(2, phone);
+        stCustomer.setString(3, defaultAddress);
+        stCustomer.executeUpdate();
 
-                int rowAffected = stAccount.executeUpdate();
-                if (rowAffected > 0) {
-                    connection.commit();
-                    isSuccess = true;
-                } else {
-                    connection.rollback();
-                }
+        rsGeneratedKeys = stCustomer.getGeneratedKeys();
+        if (rsGeneratedKeys.next()) {
+            int newCustomerID = rsGeneratedKeys.getInt(1);
+
+            stAccount = connection.prepareStatement(sqlAccount);
+            stAccount.setInt(1, newCustomerID);
+            stAccount.setString(2, username);
+            stAccount.setString(3, email);
+            stAccount.setString(4, passwordHash);
+
+            int rowAffected = stAccount.executeUpdate();
+            if (rowAffected > 0) {
+                connection.commit();
+                isSuccess = true;
             } else {
-                connection.rollback();
+                connection.rollback(); // Rollback nếu không chèn được Account
             }
-        } catch (SQLException e) {
-            System.out.println("Error rollback: " + e.getMessage());
-        } finally {
-            try {
-                if (rsGeneratedKeys != null) {
-                    rsGeneratedKeys.close();
-                }
-                if (stCustomer != null) {
-                    stCustomer.close();
-                }
-                if (stAccount != null) {
-                    stAccount.close();
-                }
-                if (connection != null) {
-                    connection.setAutoCommit(true);
-                }
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-            }
-
+        } else {
+            connection.rollback(); // Rollback nếu không lấy được CustomerID
         }
-        return isSuccess;
+    } catch (SQLException e) {
+        try {
+            if (connection != null) {
+                connection.rollback(); // BẮT BUỘC ROLLBACK KHI GẶP NGOẠI LỆ
+            }
+        } catch (SQLException ex) {
+            System.out.println("Rollback failed: " + ex.getMessage());
+        }
+        System.out.println("Error in registerNewCustomer: " + e.getMessage());
+    } finally {
+        try {
+            if (rsGeneratedKeys != null) rsGeneratedKeys.close();
+            if (stCustomer != null) stCustomer.close();
+            if (stAccount != null) stAccount.close();
+            if (connection != null) connection.setAutoCommit(true);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
+    return isSuccess;
+}
 
     public List<Account> getAllAccount() {
         List<Account> list = new ArrayList<>();
