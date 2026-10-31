@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="vi">
     <head>
@@ -18,12 +19,12 @@
             <div class="login-card">
                 <h2 class="login-title">Đăng ký tài khoản</h2>
 
-                <%-- Bắt lỗi từ AuthServlet khi trùng Username hoặc Email --%>
-                <% if (request.getAttribute("errorMessage") != null) { %>
-                <div class="alert alert-error">
-                    <%= request.getAttribute("errorMessage") %>
-                </div>
-                <% } %>
+                <%-- Bắt lỗi từ AuthServlet khi trùng Username/Email hoặc sai thông tin --%>
+                <c:if test="${not empty errorMessage}">
+                    <div class="alert alert-error">
+                        <c:out value="${errorMessage}"/>
+                    </div>
+                </c:if>
 
                 <form action="${pageContext.request.contextPath}/auth" method="POST">
                     <!-- Tham số ẩn để báo cho Servlet biết đây là luồng đăng ký -->
@@ -32,31 +33,31 @@
                     <div class="form-group">
                         <label for="username" class="form-label">Tên đăng nhập</label>
                         <input type="text" id="username" name="username" required class="form-control" 
-                               value="${param.username != null ? param.username : ''}">
+                               value="<c:out value="${param.username}"/>">
                     </div>
 
                     <div class="form-group">
                         <label for="email" class="form-label">Email</label>
                         <input type="email" id="email" name="email" required class="form-control"
-                               value="${param.email != null ? param.email : ''}">
+                               value="<c:out value="${param.email}"/>">
                     </div>
 
                     <div class="form-group">
                         <label for="fullname" class="form-label">Họ và tên</label>
                         <input type="text" id="fullname" name="fullname" required class="form-control"
-                               value="${param.fullname != null ? param.fullname : ''}">
+                               value="<c:out value="${param.fullname}"/>">
                     </div>
 
                     <div class="form-group">
                         <label for="phone" class="form-label">Số điện thoại</label>
                         <input type="text" id="phone" name="phone" required class="form-control"
-                               value="${param.phone != null ? param.phone : ''}">
+                               value="<c:out value="${param.phone}"/>">
                     </div>
 
                     <div class="form-group">
                         <label for="defaultAddress" class="form-label">Địa chỉ</label>
                         <input type="text" id="defaultAddress" name="defaultAddress" required class="form-control"
-                               value="${param.defaultAddress != null ? param.defaultAddress : ''}">
+                               value="<c:out value="${param.defaultAddress}"/>">
                     </div>
 
                     <div class="form-group">
