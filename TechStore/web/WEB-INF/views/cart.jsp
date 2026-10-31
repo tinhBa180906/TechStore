@@ -148,16 +148,18 @@
                         <div class="cart-total"><span>Tổng tạm tính</span><strong><fmt:formatNumber value="${cartTotal}" type="number"/> ₫</strong></div>
                         <p class="cart-summary-note">Giá và tình trạng sản phẩm sẽ được xác nhận khi đặt hàng.</p>
                         <c:choose>
-                            <c:when test="${not empty sessionScope.user}">
+                            <c:when test="${not empty sessionScope.user && sessionScope.user.role == 'CUSTOMER'}">
                                 <a href="${pageContext.request.contextPath}/checkout" class="btn btn-primary cart-checkout">
                                     Tiến hành đặt hàng <svg width="18" height="18"><use href="#icon-arrow-right"/></svg>
                                 </a>
+                            </c:when>
+                            <c:when test="${sessionScope.user.role == 'ADMIN'}">
+                                <p class="cart-login-note" style="color: #b01010;">Tài khoản Admin không thể đặt hàng. Vui lòng dùng tài khoản Khách hàng.</p>
                             </c:when>
                             <c:otherwise>
                                 <a href="${pageContext.request.contextPath}/login" class="btn btn-primary cart-checkout">
                                     Đăng nhập để đặt hàng <svg width="18" height="18"><use href="#icon-arrow-right"/></svg>
                                 </a>
-                                <p class="cart-login-note">Bạn cần <a href="${pageContext.request.contextPath}/login">đăng nhập</a> để hoàn tất đặt hàng.</p>
                             </c:otherwise>
                         </c:choose>
 
