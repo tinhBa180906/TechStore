@@ -30,7 +30,6 @@ public class AuthServlet extends HttpServlet {
     private static final String PROFILE_VIEW = "/WEB-INF/views/profile.jsp";
 
 //    private final AccountDAO accountDao = new AccountDAO();
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //cau hinh utf-8 de doc duoc tieng viet tu ten, ho ten
@@ -92,85 +91,85 @@ public class AuthServlet extends HttpServlet {
     }
 
     private void handleLogin(HttpServletRequest req, HttpServletResponse resp)
-        throws ServletException, IOException {
-    String username = req.getParameter("username");
-    String passwordRaw = req.getParameter("password");
+            throws ServletException, IOException {
+        String username = req.getParameter("username");
+        String passwordRaw = req.getParameter("password");
 
-    try (AccountDAO accountDao = new AccountDAO()) {
-        Account acc = accountDao.getAccountByUsername(username);
-        if (acc != null && acc.isIsActive() && PasswordUtil.verifyPassword(passwordRaw, acc.getPassword())) {
-            HttpSession session = req.getSession();
-            session.setAttribute("user", acc);
+        try (AccountDAO accountDao = new AccountDAO()) {
+            Account acc = accountDao.getAccountByUsername(username);
+            if (acc != null && acc.isIsActive() && PasswordUtil.verifyPassword(passwordRaw, acc.getPassword())) {
+                HttpSession session = req.getSession();
+                session.setAttribute("user", acc);
 
-            // Chuyen huong ve trang chu (tren header bar se hien thi Profile va cac quyen tuong ung voi Role)
-            resp.sendRedirect(req.getContextPath() + "/home");
-        } else {
-            // Dang nhap that bai (sai user, sai pass, hoac tai khoan bi khoa)
-            req.setAttribute("errorMessage", "Tên đăng nhập hoặc mật khẩu không chính xác!");
+                // Chuyen huong ve trang chu (tren header bar se hien thi Profile va cac quyen tuong ung voi Role)
+                resp.sendRedirect(req.getContextPath() + "/home");
+            } else {
+                // Dang nhap that bai (sai user, sai pass, hoac tai khoan bi khoa)
+                req.setAttribute("errorMessage", "Tên đăng nhập hoặc mật khẩu không chính xác!");
+                req.getRequestDispatcher(LOGIN_VIEW).forward(req, resp);
+            }
+        } catch (Exception e) {
+            System.out.println("Lỗi handleLogin: " + e.getMessage());
+            req.setAttribute("errorMessage", "Đã xảy ra lỗi hệ thống. Vui lòng thử lại!");
             req.getRequestDispatcher(LOGIN_VIEW).forward(req, resp);
         }
-    } catch (Exception e) {
-        System.out.println("Lỗi handleLogin: " + e.getMessage());
-        req.setAttribute("errorMessage", "Đã xảy ra lỗi hệ thống. Vui lòng thử lại!");
-        req.getRequestDispatcher(LOGIN_VIEW).forward(req, resp);
     }
-}
 
     private void handleRegister(HttpServletRequest req, HttpServletResponse resp)
-        throws ServletException, IOException {
-    String username = req.getParameter("username");
-    String email = req.getParameter("email");
-    String passwordRaw = req.getParameter("password");
-    String confirmPassword = req.getParameter("confirmPassword");
+            throws ServletException, IOException {
+        String username = req.getParameter("username");
+        String email = req.getParameter("email");
+        String passwordRaw = req.getParameter("password");
+        String confirmPassword = req.getParameter("confirmPassword");
 
-    String fullname = req.getParameter("fullname");
-    String phone = req.getParameter("phone");
-    String defaultAddress = req.getParameter("defaultAddress");
+        String fullname = req.getParameter("fullname");
+        String phone = req.getParameter("phone");
+        String defaultAddress = req.getParameter("defaultAddress");
 
-    // Kiem tra 2 mat khau co khop nhau hay khong
-    if (passwordRaw == null || !passwordRaw.equals(confirmPassword)) {
-        req.setAttribute("errorMessage", "Mật khẩu xác nhận không khớp!");
-        req.getRequestDispatcher(REGISTER_VIEW).forward(req, resp);
-        return;
-    }
-
-    if (passwordRaw.length() < 8) {
-        req.setAttribute("errorMessage", "Mật khẩu phải có ít nhất 8 ký tự!");
-        req.getRequestDispatcher(REGISTER_VIEW).forward(req, resp);
-        return;
-    }
-
-    try (AccountDAO accountDao = new AccountDAO()) {
-        // Kiem tra username hoac email ton tai
-        if (accountDao.checkUsernameOrEmailExists(username, email)) {
-            req.setAttribute("errorMessage", "Tên đăng nhập hoặc Email đã được sử dụng!");
+        // Kiem tra 2 mat khau co khop nhau hay khong
+        if (passwordRaw == null || !passwordRaw.equals(confirmPassword)) {
+            req.setAttribute("errorMessage", "Mật khẩu xác nhận không khớp!");
             req.getRequestDispatcher(REGISTER_VIEW).forward(req, resp);
             return;
         }
 
-        // Hash password truoc khi luu vao db
-        String hashPassword = PasswordUtil.hashPassword(passwordRaw);
+        if (passwordRaw.length() < 8) {
+            req.setAttribute("errorMessage", "Mật khẩu phải có ít nhất 8 ký tự!");
+            req.getRequestDispatcher(REGISTER_VIEW).forward(req, resp);
+            return;
+        }
 
-        // Goi dao de insert vao db
-        boolean isSuccess = accountDao.registerNewCustomer(username, email, hashPassword, fullname, phone, defaultAddress);
-        if (isSuccess) {
-            resp.sendRedirect(req.getContextPath() + "/login?success=1");
-        } else {
-            // Loi he thong sql
+        try (AccountDAO accountDao = new AccountDAO()) {
+            // Kiem tra username hoac email ton tai
+            if (accountDao.checkUsernameOrEmailExists(username, email)) {
+                req.setAttribute("errorMessage", "Tên đăng nhập hoặc Email đã được sử dụng!");
+                req.getRequestDispatcher(REGISTER_VIEW).forward(req, resp);
+                return;
+            }
+
+            // Hash password truoc khi luu vao db
+            String hashPassword = PasswordUtil.hashPassword(passwordRaw);
+
+            // Goi dao de insert vao db
+            boolean isSuccess = accountDao.registerNewCustomer(username, email, hashPassword, fullname, phone, defaultAddress);
+            if (isSuccess) {
+                resp.sendRedirect(req.getContextPath() + "/login?success=1");
+            } else {
+                // Loi he thong sql
+                req.setAttribute("errorMessage", "Đã xảy ra lỗi hệ thống. Vui lòng thử lại!");
+                req.getRequestDispatcher(REGISTER_VIEW).forward(req, resp);
+            }
+        } catch (Exception e) {
+            System.out.println("Lỗi handleRegister: " + e.getMessage());
             req.setAttribute("errorMessage", "Đã xảy ra lỗi hệ thống. Vui lòng thử lại!");
             req.getRequestDispatcher(REGISTER_VIEW).forward(req, resp);
         }
-    } catch (Exception e) {
-        System.out.println("Lỗi handleRegister: " + e.getMessage());
-        req.setAttribute("errorMessage", "Đã xảy ra lỗi hệ thống. Vui lòng thử lại!");
-        req.getRequestDispatcher(REGISTER_VIEW).forward(req, resp);
     }
-}
 
-    private void handleUpdateProfile(HttpServletRequest req, HttpServletResponse resp)
-        throws ServletException, IOException {
-    HttpSession session = req.getSession(false);
-    Account user = (session != null) ? (Account) session.getAttribute("user") : null;
+    private void handleUpdateProfile(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    HttpSession session = req.getSession();
+    Account user = (Account) session.getAttribute("user");
+
     if (user == null) {
         resp.sendRedirect(req.getContextPath() + "/login");
         return;
@@ -180,16 +179,23 @@ public class AuthServlet extends HttpServlet {
     String phone = req.getParameter("phone");
     String defaultAddress = req.getParameter("defaultAddress");
 
+    // Validation cơ bản
+    if (fullname == null || fullname.trim().length() < 2) {
+        req.setAttribute("error", "Họ và tên phải có ít nhất 2 ký tự.");
+        req.getRequestDispatcher("/WEB-INF/views/profile.jsp").forward(req, resp);
+        return;
+    }
+
     boolean isUpdated = false;
     try (AccountDAO accountDao = new AccountDAO()) {
         if (user.getCustomerId() != null && user.getCustomerId() > 0) {
             isUpdated = accountDao.updateCustomerProfile(user.getCustomerId(), fullname, phone, defaultAddress);
         } else {
-            // Neu la tai khoan Admin (customerId == null)
-            isUpdated = true;
+            // Đối với tài khoản Admin không có CustomerID
+            isUpdated = true; 
         }
     } catch (Exception e) {
-        System.out.println("Lỗi handleUpdateProfile: " + e.getMessage());
+        e.printStackTrace();
     }
 
     if (isUpdated) {
@@ -197,12 +203,11 @@ public class AuthServlet extends HttpServlet {
         user.setPhone(phone);
         user.setDefaultAddress(defaultAddress);
         session.setAttribute("user", user);
-
         req.setAttribute("message", "Cập nhật thông tin tài khoản thành công!");
     } else {
-        req.setAttribute("errorMessage", "Cập nhật thất bại. Vui lòng kiểm tra lại thông tin!");
+        req.setAttribute("error", "Cập nhật thất bại. Vui lòng kiểm tra lại thông tin!");
     }
-    
-    req.getRequestDispatcher(PROFILE_VIEW).forward(req, resp);
+
+    req.getRequestDispatcher("/WEB-INF/views/profile.jsp").forward(req, resp);
 }
 }
