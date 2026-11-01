@@ -6,6 +6,7 @@ package controller;
 
 import controller.orders.OrderSupport;
 import dao.OrderDAO;
+import dao.ReviewDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
@@ -58,11 +59,21 @@ public class OrderServlet extends HttpServlet {
             OrderSupport.cartView(req);
             req.getRequestDispatcher("/WEB-INF/views/checkout.jsp").forward(req, resp);
         } else {
+            java.util.List<Order> orders = java.util.List.of();
             try (OrderDAO dao = new OrderDAO()) {
-                req.setAttribute("orders", dao.getOrders(user.getCustomerId()));
+                orders = dao.getOrders(user.getCustomerId());
+                req.setAttribute("orders", orders);
             } catch (SQLException e) {
                 getServletContext().log("Order history failed", e);
                 resp.setStatus(503); req.setAttribute("errorMessage", "Chưa thể tải lịch sử đơn hàng.");
+            }
+            if (orders.stream().anyMatch(order -> "COMPLETED".equals(order.getOrderStatus()))) {
+                try (ReviewDAO dao = new ReviewDAO()) {
+                    req.setAttribute("reviewedProducts", dao.getReviewedProducts(user.getAccountId()));
+                } catch (SQLException e) {
+                    getServletContext().log("Unable to load review indicators for order history", e);
+                    // Review links still work; the detail page rechecks ownership and loads the existing review.
+                }
             }
             req.getRequestDispatcher("/WEB-INF/views/order-history.jsp").forward(req, resp);
         }

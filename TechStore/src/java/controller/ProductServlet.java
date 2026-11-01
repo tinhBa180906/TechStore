@@ -1,11 +1,14 @@
 package controller;
 
 import dao.ProductDAO;
+import dao.ReviewDAO;
+import controller.orders.OrderSupport;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -14,6 +17,8 @@ import java.util.List;
 import model.Brand;
 import model.Category;
 import model.Product;
+import model.Account;
+import model.ProductReview;
 
 @WebServlet(name = "ProductServlet", urlPatterns = {"/home", "/product-detail", "/products", "/search"})
 public class ProductServlet extends HttpServlet {
@@ -51,6 +56,7 @@ public class ProductServlet extends HttpServlet {
 
     private void handleProductDetail(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        OrderSupport.prepare(request, response);
         String idParam = request.getParameter("id");
         int productId = 0;
         if (idParam != null) {
@@ -65,20 +71,63 @@ public class ProductServlet extends HttpServlet {
             return;
         }
 
+        Product product;
+        List<Product> relatedProducts;
         try (ProductDAO dao = new ProductDAO()) {
-            Product product = dao.getProductById(productId);
+            product = dao.getProductById(productId);
             if (product == null || !product.isActive()) {
                 response.sendRedirect(request.getContextPath() + "/home");
                 return;
             }
 
-            List<Product> relatedProducts = dao.getRelatedProducts(product.getCategoryId(), product.getProductId(), 4);
-            request.setAttribute("product", product);
-            request.setAttribute("relatedProducts", relatedProducts);
-            request.getRequestDispatcher(DETAIL_VIEW).forward(request, response);
+            relatedProducts = dao.getRelatedProducts(product.getCategoryId(), product.getProductId(), 4);
         } catch (SQLException exception) {
             getServletContext().log("Unable to load product detail for ID: " + productId, exception);
             response.sendRedirect(request.getContextPath() + "/home");
+            return;
+        }
+        request.setAttribute("product", product);
+        request.setAttribute("relatedProducts", relatedProducts);
+        loadReviews(request, productId);
+        request.getRequestDispatcher(DETAIL_VIEW).forward(request, response);
+    }
+
+    private void loadReviews(HttpServletRequest request, int productId) {
+        Object value = request.getSession().getAttribute("user");
+        Account account = value instanceof Account ? (Account) value : null;
+        boolean customer = account != null && account.isIsActive() && "CUSTOMER".equals(account.getRole())
+                && account.getCustomerId() != null && account.getCustomerId() > 0;
+        request.setAttribute("reviewCustomer", customer);
+        request.setAttribute("canReview", false);
+        request.setAttribute("reviews", List.of());
+        try (ReviewDAO dao = new ReviewDAO()) {
+            request.setAttribute("reviews", dao.getReviewsByProduct(productId));
+            request.setAttribute("reviewSummary", dao.getRatingSummary(productId));
+            if (customer) {
+                ProductReview ownReview = dao.getReviewByUserAndProduct(account.getAccountId(), productId);
+                request.setAttribute("ownReview", ownReview);
+                request.setAttribute("canReview", dao.hasPurchasedProduct(account.getAccountId(), productId));
+                request.setAttribute("reviewFormRating", ownReview == null ? 0 : ownReview.getRating());
+                request.setAttribute("reviewFormComment", ownReview == null ? "" : ownReview.getComment());
+            }
+        } catch (SQLException e) {
+            getServletContext().log("Unable to load reviews for product " + productId, e);
+            request.setAttribute("reviewsUnavailable", true); // Keep catalog/cart usable if reviews cannot load.
+        }
+
+        HttpSession session = request.getSession();
+        synchronized (session) {
+            if (account != null && Integer.valueOf(account.getAccountId()).equals(session.getAttribute("reviewFlashAccountId"))
+                    && Integer.valueOf(productId).equals(session.getAttribute("reviewFlashProductId"))) {
+                request.setAttribute("reviewSuccess", session.getAttribute("reviewFlashSuccess"));
+                request.setAttribute("reviewError", session.getAttribute("reviewFlashError"));
+                if (!Boolean.TRUE.equals(session.getAttribute("reviewFlashSuccess"))) {
+                    request.setAttribute("reviewFormComment", session.getAttribute("reviewFlashComment"));
+                    request.setAttribute("reviewFormRating", session.getAttribute("reviewFlashRating"));
+                }
+                for (String key : new String[]{"reviewFlashAccountId", "reviewFlashProductId", "reviewFlashSuccess",
+                        "reviewFlashError", "reviewFlashComment", "reviewFlashRating"}) session.removeAttribute(key);
+            }
         }
     }
 
