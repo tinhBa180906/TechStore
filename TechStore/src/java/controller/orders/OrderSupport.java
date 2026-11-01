@@ -48,14 +48,24 @@ public final class OrderSupport {
         Object value = req.getSession().getAttribute("user");
         Account user = value instanceof Account ? (Account) value : null;
         if (user == null || !user.isIsActive()) {
-            // Tự động chuyển hướng về trang đăng nhập thay vì bắn lỗi 401 thô của Tomcat
             resp.sendRedirect(req.getContextPath() + "/login");
             return null;
         }
-        if (admin ? !"ADMIN".equals(user.getRole())
-                : (!"CUSTOMER".equals(user.getRole()) || user.getCustomerId() == null || user.getCustomerId() < 1)) {
-            resp.sendError(403, "Bạn không có quyền truy cập chức năng này.");
-            return null;
+        if (admin) {
+            if (!"ADMIN".equals(user.getRole())) {
+                resp.sendError(403, "Bạn không có quyền truy cập chức năng Quản trị.");
+                return null;
+            }
+        } else {
+            // Nếu Admin cố tình truy cập luồng mua hàng (checkout/orders)
+            if ("ADMIN".equals(user.getRole())) {
+                resp.sendRedirect(req.getContextPath() + "/cart?error=admin_restricted");
+                return null;
+            }
+            if (!"CUSTOMER".equals(user.getRole()) || user.getCustomerId() == null || user.getCustomerId() < 1) {
+                resp.sendRedirect(req.getContextPath() + "/login");
+                return null;
+            }
         }
         return user;
     }
