@@ -97,6 +97,11 @@
             <ol class="cart-steps" aria-label="Các bước đặt hàng"><li class="active" aria-current="step"><span>01</span> Giỏ hàng</li><li><span>02</span> Đặt hàng</li><li><span>03</span> Hoàn tất</li></ol>
         </div>
         <c:if test="${not empty errorMessage}"><div class="alert alert-error" role="alert"><c:out value="${errorMessage}"/></div></c:if>
+        <c:if test="${param.error == 'admin_restricted'}">
+            <div class="alert alert-error" role="alert">
+                ⚠️ Tài khoản Quản trị viên (Admin) không thể thực hiện đặt hàng. Vui lòng đăng nhập bằng tài khoản Khách hàng để thanh toán!
+            </div>
+        </c:if>
         <c:choose>
             <c:when test="${empty cartItems}">
                 <section class="cart-empty">
@@ -148,18 +153,22 @@
                         <div class="cart-total"><span>Tổng tạm tính</span><strong><fmt:formatNumber value="${cartTotal}" type="number"/> ₫</strong></div>
                         <p class="cart-summary-note">Giá và tình trạng sản phẩm sẽ được xác nhận khi đặt hàng.</p>
                         <c:choose>
-                            <c:when test="${not empty sessionScope.user && sessionScope.user.role == 'CUSTOMER'}">
+                            <c:when test="${not empty sessionScope.user and sessionScope.user.role == 'ADMIN'}">
+                                <button type="button" class="btn btn-primary cart-checkout" style="opacity: 0.6; cursor: not-allowed;" title="Admin không thể đặt hàng" disabled>
+                                    Tài khoản Admin không thể đặt hàng
+                                </button>
+                                <p class="cart-login-note" style="color: #c0392b;">Bạn đang đăng nhập bằng <strong>Admin</strong>. Hãy dùng tài khoản <strong>Khách hàng</strong> để mua.</p>
+                            </c:when>
+                            <c:when test="${not empty sessionScope.user}">
                                 <a href="${pageContext.request.contextPath}/checkout" class="btn btn-primary cart-checkout">
                                     Tiến hành đặt hàng <svg width="18" height="18"><use href="#icon-arrow-right"/></svg>
                                 </a>
-                            </c:when>
-                            <c:when test="${sessionScope.user.role == 'ADMIN'}">
-                                <p class="cart-login-note" style="color: #b01010;">Tài khoản Admin không thể đặt hàng. Vui lòng dùng tài khoản Khách hàng.</p>
                             </c:when>
                             <c:otherwise>
                                 <a href="${pageContext.request.contextPath}/login" class="btn btn-primary cart-checkout">
                                     Đăng nhập để đặt hàng <svg width="18" height="18"><use href="#icon-arrow-right"/></svg>
                                 </a>
+                                <p class="cart-login-note">Bạn cần <a href="${pageContext.request.contextPath}/login">đăng nhập</a> để hoàn tất đặt hàng.</p>
                             </c:otherwise>
                         </c:choose>
 
