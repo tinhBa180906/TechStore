@@ -73,9 +73,16 @@
                     <button type="submit" class="btn-primary">Đăng ký</button>
                 </form>
 
-                <div class="login-footer">
-                    <span>Đã có tài khoản?</span>
-                    <a href="${pageContext.request.contextPath}/login.jsp">Đăng nhập ngay</a>
+                <div class="login-footer" style="margin-top: 16px; display: flex; flex-direction: column; gap: 10px; align-items: center;">
+                    <div>
+                        <span>Đã có tài khoản?</span>
+                        <a href="${pageContext.request.contextPath}/login">Đăng nhập ngay</a>
+                    </div>
+                    <div>
+                        <a href="${pageContext.request.contextPath}/home" style="color: #666; text-decoration: none; font-size: 14px;">
+                            ← Quay về trang chủ
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
