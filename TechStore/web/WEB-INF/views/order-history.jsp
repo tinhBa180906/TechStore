@@ -9,6 +9,7 @@
     <title>Lịch sử mua hàng | TechStore</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/orders.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/order-experience.css?v=1">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/product-reviews.css?v=2">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/payment-qr.css?v=3"></head>
 <body class="orders-page history-page">
 <fmt:setLocale value="vi_VN"/>
@@ -166,6 +167,18 @@
 <c:otherwise><span class="history-stage">ĐƠN HÀNG ĐÃ HỦY</span><p>Bạn có thể tiếp tục khám phá sản phẩm tại cửa hàng.</p></c:otherwise>
 </c:choose>
 </div>
+<c:if test="${order.orderStatus == 'COMPLETED'}">
+    <section class="history-review-invite" aria-label="Đánh giá sản phẩm trong đơn ${order.orderId}">
+        <div class="history-review-invite-heading"><span aria-hidden="true">★</span><div><strong>Đánh giá sản phẩm đã nhận</strong><p>Chia sẻ trải nghiệm của bạn về đơn hàng này.</p></div></div>
+        <div class="history-review-products">
+            <c:forEach items="${order.details}" var="reviewItem">
+                <div class="history-review-product"><span><c:out value="${reviewItem.product.productName}"/></span>
+                    <a class="history-review-button ${reviewedProducts[reviewItem.productId] ? 'history-review-button-edit' : ''}" href="${pageContext.request.contextPath}/product-detail?id=${reviewItem.productId}#review-form">${reviewedProducts[reviewItem.productId] ? 'Sửa đánh giá' : 'Gửi đánh giá'} <span aria-hidden="true">→</span></a>
+                </div>
+            </c:forEach>
+        </div>
+    </section>
+</c:if>
 <c:if test="${order.paymentMethod == 'QR' and order.orderStatus != 'CANCELLED'}">
     <c:choose>
         <c:when test="${order.paymentStatus == 'UNPAID'}">

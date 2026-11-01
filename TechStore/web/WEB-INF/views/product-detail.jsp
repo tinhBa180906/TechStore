@@ -11,6 +11,7 @@
         <meta name="description" content="Chi tiết sản phẩm <c:out value="${product.productName}"/> chính hãng tại TechStore. Mua sắm an tâm với chính sách bảo hành rõ ràng.">
         <title><c:out value="${product.productName}"/> — TechStore</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/product-reviews.css?v=3">
     </head>
     <body class="techstore-home techstore-page" id="chi-tiet-san-pham">
 
@@ -210,6 +211,8 @@
                 </div>
             </section>
 
+            <jsp:include page="/WEB-INF/views/product-reviews.jsp"/>
+
             <!-- Related Products Section -->
             <c:if test="${not empty relatedProducts}">
                 <section class="ts-section ts-related-section" aria-labelledby="ts-related-heading">
@@ -253,6 +256,7 @@
 
         <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 
+        <script src="${pageContext.request.contextPath}/js/product-reviews.js?v=1" defer></script>
         <script>
             function decreaseQty() {
                 const input = document.getElementById('ts-qty-input');
