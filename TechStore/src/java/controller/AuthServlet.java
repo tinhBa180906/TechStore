@@ -91,29 +91,42 @@ public class AuthServlet extends HttpServlet {
     }
 
     private void handleLogin(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        String username = req.getParameter("username");
-        String passwordRaw = req.getParameter("password");
+        throws ServletException, IOException {
+    String username = req.getParameter("username");
+    String passwordRaw = req.getParameter("password");
 
-        try (AccountDAO accountDao = new AccountDAO()) {
-            Account acc = accountDao.getAccountByUsername(username);
-            if (acc != null && acc.isIsActive() && PasswordUtil.verifyPassword(passwordRaw, acc.getPassword())) {
-                HttpSession session = req.getSession();
-                session.setAttribute("user", acc);
+    try (AccountDAO accountDao = new AccountDAO()) {
+        Account acc = accountDao.getAccountByUsername(username);
+        if (acc != null && acc.isIsActive() && PasswordUtil.verifyPassword(passwordRaw, acc.getPassword())) {
+            HttpSession session = req.getSession();
+            session.setAttribute("user", acc);
 
-                // Chuyen huong ve trang chu (tren header bar se hien thi Profile va cac quyen tuong ung voi Role)
-                resp.sendRedirect(req.getContextPath() + "/home");
-            } else {
-                // Dang nhap that bai (sai user, sai pass, hoac tai khoan bi khoa)
-                req.setAttribute("errorMessage", "Tên đăng nhập hoặc mật khẩu không chính xác!");
-                req.getRequestDispatcher(LOGIN_VIEW).forward(req, resp);
-            }
-        } catch (Exception e) {
-            System.out.println("Lỗi handleLogin: " + e.getMessage());
-            req.setAttribute("errorMessage", "Đã xảy ra lỗi hệ thống. Vui lòng thử lại!");
+            // --- BỔ SUNG CẤU HÌNH LƯU PHIÊN 7 NGÀY ---
+            int sevenDaysInSeconds = 7 * 24 * 60 * 60; // 604,800 giây
+            session.setMaxInactiveInterval(sevenDaysInSeconds); // Gia hạn session server 7 ngày
+            session.setAttribute("loginTime", System.currentTimeMillis()); // Lưu mốc thời gian đăng nhập
+
+            // Tạo và gửi Cookie JSESSIONID sống 7 ngày trên trình duyệt
+            jakarta.servlet.http.Cookie sessionCookie = new jakarta.servlet.http.Cookie("JSESSIONID", session.getId());
+            sessionCookie.setMaxAge(sevenDaysInSeconds);
+            sessionCookie.setPath(req.getContextPath().isEmpty() ? "/" : req.getContextPath());
+            sessionCookie.setHttpOnly(true);
+            resp.addCookie(sessionCookie);
+            // ------------------------------------------
+
+            // Chuyen huong ve trang chu (tren header bar se hien thi Profile va cac quyen tuong ung voi Role)
+            resp.sendRedirect(req.getContextPath() + "/home");
+        } else {
+            // Dang nhap that bai (sai user, sai pass, hoac tai khoan bi khoa)
+            req.setAttribute("errorMessage", "Tên đăng nhập hoặc mật khẩu không chính xác!");
             req.getRequestDispatcher(LOGIN_VIEW).forward(req, resp);
         }
+    } catch (Exception e) {
+        System.out.println("Lỗi handleLogin: " + e.getMessage());
+        req.setAttribute("errorMessage", "Đã xảy ra lỗi hệ thống. Vui lòng thử lại!");
+        req.getRequestDispatcher(LOGIN_VIEW).forward(req, resp);
     }
+}
 
     private void handleRegister(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
