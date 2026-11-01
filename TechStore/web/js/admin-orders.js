@@ -40,3 +40,43 @@
     });
     update();
 })();
+
+// Payment confirmation stays separate from order delivery actions and existing filters.
+(() => {
+    'use strict';
+    const dialog = document.getElementById('admin-payment-dialog');
+    const form = document.getElementById('admin-payment-confirm-form');
+    if (!dialog || !form) return;
+    const verified = document.getElementById('admin-payment-verified');
+    const submit = document.getElementById('admin-payment-final-confirm');
+    const label = form.querySelector('[data-admin-payment-submit-label]');
+    const reset = () => {
+        verified.checked = false;
+        submit.disabled = true;
+        form.removeAttribute('aria-busy');
+        label.textContent = 'Xác nhận nhận tiền';
+    };
+    document.querySelectorAll('[data-admin-payment-confirm]').forEach(button => {
+        button.addEventListener('click', () => {
+            reset();
+            const id = button.dataset.adminPaymentConfirm;
+            document.getElementById('admin-payment-order-id').value = id;
+            document.getElementById('admin-payment-dialog-order').textContent = '#' + id;
+            document.getElementById('admin-payment-dialog-amount').textContent = button.dataset.adminPaymentAmount + ' ₫';
+            document.getElementById('admin-payment-dialog-reference').textContent = 'TECHSTORE' + id;
+            dialog.showModal();
+        });
+    });
+    verified.addEventListener('change', () => { submit.disabled = !verified.checked; });
+    dialog.querySelectorAll('[data-admin-payment-close]').forEach(button => {
+        button.addEventListener('click', () => { if (!form.hasAttribute('aria-busy')) dialog.close(); });
+    });
+    dialog.addEventListener('cancel', event => { if (form.hasAttribute('aria-busy')) event.preventDefault(); });
+    form.addEventListener('submit', event => {
+        if (form.hasAttribute('aria-busy') || !verified.checked) { event.preventDefault(); return; }
+        form.setAttribute('aria-busy', 'true');
+        submit.disabled = true;
+        label.textContent = 'Đang xác nhận…';
+    });
+    window.addEventListener('pageshow', reset);
+})();

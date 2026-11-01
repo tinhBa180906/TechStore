@@ -21,6 +21,11 @@ public class AdminOrderServlet extends HttpServlet {
     @Override protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         OrderSupport.prepare(req, resp);
         if (OrderSupport.requireUser(req, resp, true) == null) return;
+        Object notice = req.getSession().getAttribute("paymentNotice");
+        if (notice != null) {
+            req.setAttribute("paymentNotice", notice);
+            req.getSession().removeAttribute("paymentNotice");
+        }
         try (OrderDAO dao = new OrderDAO()) {
             req.setAttribute("orders", dao.getOrders(null));
         } catch (SQLException e) {
@@ -34,7 +39,15 @@ public class AdminOrderServlet extends HttpServlet {
         req.setCharacterEncoding("UTF-8"); OrderSupport.prepare(req, resp);
         if (OrderSupport.requireUser(req, resp, true) == null || !OrderSupport.csrf(req, resp)) return;
         try (OrderDAO dao = new OrderDAO()) {
-            dao.updateStatus(OrderSupport.positiveInt(req.getParameter("orderId")), req.getParameter("status"));
+            int id = OrderSupport.positiveInt(req.getParameter("orderId"));
+            if ("confirmPayment".equals(req.getParameter("action"))) {
+                boolean changed = dao.confirmPayment(id);
+                req.getSession().setAttribute("paymentNotice", changed
+                        ? "Đã xác nhận nhận tiền cho đơn #" + id + ". Trạng thái giao hàng được giữ nguyên."
+                        : "Đơn #" + id + " đã được xác nhận thanh toán trước đó.");
+            } else if (req.getParameter("action") == null) {
+                dao.updateStatus(id, req.getParameter("status"));
+            } else throw new IllegalArgumentException("Thao tác không hợp lệ.");
             resp.sendRedirect(req.getContextPath() + "/admin/orders");
         } catch (IllegalArgumentException e) {
             resp.setStatus(409); req.setAttribute("errorMessage", e.getMessage()); doGet(req, resp);

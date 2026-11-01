@@ -48,6 +48,54 @@
 .admin-orders-page .btn { border-radius: 8px; padding: 11px 16px; font-size: 12px; }
 .admin-orders-page .admin-cancel { color: #be3346; background: white; border: 1px solid #f0d4d9; }
 .admin-orders-page .admin-cancel:hover { background: #fff1f2; border-color: #e9aeb8; }
+.admin-orders-page .admin-payment-panel { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; margin: 0 24px 20px; padding: 18px 20px; border: 1px solid #e2e8f0; border-radius: 11px; background: #f8fafc; }
+.admin-orders-page .admin-payment-needs-review { border-color: #cbdcf7; background: #f1f6ff; }
+.admin-orders-page .admin-payment-overview { display: flex; align-items: center; gap: 12px; flex: 1 1 240px; }
+.admin-orders-page .admin-payment-icon { display: grid; place-items: center; width: 40px; height: 40px; flex-shrink: 0; border-radius: 12px; background: #e5edfa; color: #0757ce; }
+.admin-orders-page .admin-payment-eyebrow { display: block; margin-bottom: 3px; color: #72829a; font-size: 9px; font-weight: 700; letter-spacing: 1px; }
+.admin-orders-page .admin-payment-overview strong { display: block; color: #263d5c; font-size: 13px; }
+.admin-orders-page .admin-payment-reference { display: block; margin-top: 5px; color: #7a899c; font-size: 11px; }
+.admin-orders-page .admin-payment-reference code { padding: 2px 5px; border-radius: 4px; background: #e8eef7; color: #456182; font: inherit; font-weight: 600; }
+.admin-orders-page .admin-payment-amount { flex: 0 1 auto; }
+.admin-orders-page .admin-payment-amount > span { display: block; color: #7a899c; font-size: 10px; }
+.admin-orders-page .admin-payment-amount strong { display: block; color: #233c60; font-size: 20px; font-weight: 700; letter-spacing: -.5px; font-variant-numeric: tabular-nums; }
+.admin-orders-page .admin-payment-actions { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-left: auto; }
+.admin-orders-page .admin-payment-confirm-button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; background: #0757ce; box-shadow: 0 3px 9px #0757ce16; }
+.admin-orders-page .admin-payment-details-link { color: #687d99; font-size: 11px; }
+.admin-orders-page .admin-payment-details-link:hover { color: #0757ce; }
+.admin-orders-page .admin-payment-notice { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; padding: 15px 18px; border: 1px solid #cde6d7; border-radius: 10px; background: #eef9f2; color: #276345; font-size: 13px; }
+.admin-orders-page .admin-payment-dialog { width: min(460px, calc(100% - 32px)); max-height: calc(100dvh - 40px); margin: auto; padding: 28px; overflow-y: auto; border: 1px solid #dce4ef; border-radius: 18px; color: #233149; background: #fff; box-shadow: 0 24px 100px #101e3a40; }
+.admin-orders-page .admin-payment-dialog::backdrop { background: #101d36a6; backdrop-filter: blur(4px); }
+.admin-orders-page .admin-payment-dialog[open] { animation: admin-payment-enter .18s ease-out; }
+.admin-orders-page .admin-payment-dialog-heading { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 16px; }
+.admin-orders-page .admin-payment-dialog-icon { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 14px; background: #edf4ff; color: #0757ce; }
+.admin-orders-page .admin-payment-dialog-close { width: 30px; height: 30px; padding: 0; border: 0; border-radius: 7px; background: #f3f5f9; color: #738198; font-size: 22px; line-height: 1; cursor: pointer; }
+.admin-orders-page .admin-payment-dialog h2 { font-size: 22px; letter-spacing: -.5px; }
+.admin-orders-page .admin-payment-dialog #admin-payment-dialog-description { margin-top: 8px; color: #748198; font-size: 13px; }
+.admin-orders-page .admin-payment-dialog-summary { display: grid; gap: 13px; margin: 22px 0; padding: 17px; border: 1px solid #e3eaf4; border-radius: 11px; background: #f8faff; }
+.admin-orders-page .admin-payment-dialog-summary > div { display: flex; justify-content: space-between; gap: 16px; }
+.admin-orders-page .admin-payment-dialog-summary dt { color: #7a879c; font-size: 12px; }
+.admin-orders-page .admin-payment-dialog-summary dd { margin: 0; color: #2c486f; font-size: 13px; font-weight: 600; text-align: right; overflow-wrap: anywhere; }
+.admin-orders-page .admin-payment-attestation { display: flex; align-items: flex-start; gap: 10px; color: #455873; font-size: 12px; cursor: pointer; }
+.admin-orders-page .admin-payment-attestation input { width: 17px; height: 17px; flex-shrink: 0; margin: 1px 0 0; accent-color: #0757ce; }
+.admin-orders-page .admin-payment-dialog-hint { margin-top: 10px; color: #8b96a7; font-size: 11px; }
+.admin-orders-page .admin-payment-dialog-buttons { display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px; }
+.admin-orders-page .admin-payment-dialog-buttons .btn-primary { background: #0757ce; }
+.admin-orders-page .admin-payment-dialog-buttons button:disabled { opacity: .5; cursor: not-allowed; }
+.admin-orders-page .admin-payment-spinner { display: none; width: 14px; height: 14px; border: 2px solid #ffffff66; border-top-color: #fff; border-radius: 50%; }
+.admin-orders-page .admin-payment-dialog form[aria-busy="true"] .admin-payment-spinner { display: inline-block; animation: admin-payment-spin .7s linear infinite; }
+@keyframes admin-payment-enter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes admin-payment-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .admin-orders-page .admin-payment-dialog[open], .admin-orders-page .admin-payment-dialog form[aria-busy="true"] .admin-payment-spinner { animation: none; } }
+@media (max-width: 800px) {
+    .admin-orders-page .admin-payment-panel { margin-inline: 18px; padding: 16px; gap: 15px; }
+    .admin-orders-page .admin-payment-actions { flex-direction: row; width: 100%; justify-content: space-between; }
+}
+@media (max-width: 420px) {
+    .admin-orders-page .admin-payment-actions { flex-direction: column; align-items: stretch; text-align: center; }
+    .admin-orders-page .admin-payment-dialog { padding: 22px; }
+    .admin-orders-page .admin-payment-dialog-buttons { flex-wrap: wrap; }
+}
 .admin-no-results { text-align: center; padding: 48px 24px; background: white; border: 1px dashed #d6deeb; border-radius: 14px; margin-bottom: 24px; }
 .admin-no-results strong { font-size: 18px; }
 .admin-no-results p { color: #718096; margin: 8px 0 20px; }

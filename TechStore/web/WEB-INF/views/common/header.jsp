@@ -95,25 +95,6 @@
 
 <a class="ts-skip-link" href="#noi-dung">Đến nội dung chính</a>
 
-<div class="ts-topbar">
-    <div class="ts-container ts-topbar-inner">
-        <p><svg class="ts-icon" aria-hidden="true" focusable="false">
-                <use href="#ts-bag"></use>
-            </svg> Khám phá công nghệ cùng TechStore</p>
-        <div class="ts-topbar-links">
-            <c:if test="${not empty sessionScope.user and sessionScope.user.role == 'ADMIN'}">
-                <a href="${pageContext.request.contextPath}/admin/products"
-                    class="ts-topbar-admin-badge" title="Chuyển đến trang Quản lý sản phẩm"><svg
-                        class="ts-icon" aria-hidden="true" focusable="false">
-                        <use href="#ts-document"></use>
-                    </svg> Quản lý sản phẩm (Admin)</a>
-                <span class="ts-topbar-divider" aria-hidden="true">|</span>
-            </c:if>
-            <span>Tiếng Việt <span class="ts-topbar-divider" aria-hidden="true">|</span> VND</span>
-        </div>
-    </div>
-</div>
-
 <header class="ts-header">
     <div class="ts-container ts-header-inner">
         <a class="ts-logo" href="${pageContext.request.contextPath}/home"
