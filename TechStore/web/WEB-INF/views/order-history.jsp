@@ -8,7 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Lịch sử mua hàng | TechStore</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/orders.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/order-experience.css?v=1"></head>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/order-experience.css?v=1">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/payment-qr.css?v=3"></head>
 <body class="orders-page history-page">
 <fmt:setLocale value="vi_VN"/>
 
@@ -165,11 +166,28 @@
 <c:otherwise><span class="history-stage">ĐƠN HÀNG ĐÃ HỦY</span><p>Bạn có thể tiếp tục khám phá sản phẩm tại cửa hàng.</p></c:otherwise>
 </c:choose>
 </div>
+<c:if test="${order.paymentMethod == 'QR' and order.orderStatus != 'CANCELLED'}">
+    <c:choose>
+        <c:when test="${order.paymentStatus == 'UNPAID'}">
+            <div class="qrpay-history-reminder">
+                <span class="qrpay-history-reminder-icon" aria-hidden="true">₫</span>
+                <div><strong>Đơn hàng đang chờ thanh toán</strong><p>Quay lại mã QR để chuyển khoản cho đơn này.</p></div>
+                <a class="qrpay-history-resume" href="${pageContext.request.contextPath}/payment-qr?orderId=${order.orderId}">Tiếp tục thanh toán <span aria-hidden="true">→</span></a>
+            </div>
+        </c:when>
+        <c:when test="${order.paymentStatus == 'PENDING_VERIFY'}">
+            <div class="qrpay-history-reminder qrpay-history-verifying">
+                <div><strong>Đã gửi thông báo chuyển khoản</strong><p>TechStore đang chờ đối chiếu giao dịch.</p></div>
+                <a class="qrpay-history-status-link" href="${pageContext.request.contextPath}/payment-qr?orderId=${order.orderId}">Xem trạng thái <span aria-hidden="true">→</span></a>
+            </div>
+        </c:when>
+    </c:choose>
+</c:if>
 <details class="history-details"><summary>Thông tin giao hàng <span aria-hidden="true">⌄</span></summary><div class="order-shipping">
 <div><span class="order-shipping-label">Người nhận</span><div class="order-shipping-value"><c:out value="${order.shippingName}"/></div></div>
 <div><span class="order-shipping-label">Điện thoại</span><div class="order-shipping-value"><c:out value="${order.shippingPhone}"/></div></div>
 <div><span class="order-shipping-label">Địa chỉ</span><div class="order-shipping-value"><c:out value="${order.shippingAddress}"/></div></div>
-<div><span class="order-shipping-label">Thanh toán</span><div class="order-shipping-value">COD</div></div>
+<div><span class="order-shipping-label">Thanh toán</span><div class="order-shipping-value"><c:out value="${order.paymentMethod}"/> · <c:out value="${order.paymentStatus}"/></div></div>
 </div></details>
 <div class="order-card-body">
                 <!-- Order Details Table -->
@@ -200,7 +218,10 @@
                 <div class="order-total">
                     <span>Tổng cộng:</span> <fmt:formatNumber value="${order.totalAmount}" type="number"/> ₫
                 </div>
-                <c:if test="${order.orderStatus == 'PENDING'}">
+                <c:if test="${order.paymentMethod == 'QR' and (order.paymentStatus == 'PAID' or order.orderStatus == 'CANCELLED')}">
+                    <a class="btn" href="${pageContext.request.contextPath}/payment-qr?orderId=${order.orderId}">Chi tiết thanh toán</a>
+                </c:if>
+                <c:if test="${order.orderStatus == 'PENDING' and not (order.paymentMethod == 'QR' and order.paymentStatus == 'PAID')}">
                     <form method="post" action="${pageContext.request.contextPath}/orders" style="display:inline;">
                         <input type="hidden" name="csrf" value="${sessionScope.orderCsrf}">
                         <input type="hidden" name="action" value="cancel">

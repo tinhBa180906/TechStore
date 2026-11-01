@@ -134,6 +134,7 @@
                         </div>
                         <form method="post" action="${pageContext.request.contextPath}/checkout">
                             <input type="hidden" name="csrf" value="${sessionScope.orderCsrf}">
+                            <input type="hidden" name="checkoutToken" value="${sessionScope.checkoutToken}">
                             <div class="form-group">
                                 <label class="form-label" for="shippingName">Họ tên người nhận <span class="required-mark">*</span></label>
                                 <input id="shippingName" name="shippingName" required minlength="2" maxlength="100" autocomplete="name" class="form-control" placeholder="Nhập họ tên đầy đủ" value="<c:out value='${param.shippingName}'/>">
@@ -146,9 +147,21 @@
                                 <label class="form-label" for="shippingAddress">Địa chỉ nhận hàng <span class="required-mark">*</span></label>
                                 <textarea id="shippingAddress" name="shippingAddress" required maxlength="255" rows="3" autocomplete="street-address" class="form-control" placeholder="Số nhà, đường, phường/xã, quận/huyện, tỉnh/thành phố"><c:out value="${param.shippingAddress}"/></textarea>
                             </div>
+                            <fieldset class="form-group">
+                                <legend class="form-label">PAYMENT METHOD</legend>
+                                <label style="display:block;padding:10px 0;cursor:pointer;">
+                                    <input type="radio" name="paymentMethod" value="COD" ${param.paymentMethod != 'QR' ? 'checked' : ''}>
+                                    Cash On Delivery (COD) — Thanh toán khi nhận hàng
+                                </label>
+                                <label style="display:block;padding:10px 0;cursor:pointer;">
+                                    <input type="radio" name="paymentMethod" value="QR" ${param.paymentMethod == 'QR' ? 'checked' : ''}>
+                                    Bank Transfer (VietQR) — Chuyển khoản ngân hàng
+                                </label>
+                                <p class="form-hint">VietQR: tạo đơn trước, sau đó chuyển khoản và chờ quản trị viên xác nhận.</p>
+                            </fieldset>
                             <div class="checkout-payment-note">
                                 <svg><use href="#icon-info"/></svg>
-                                <div><strong>Thanh toán khi nhận hàng (COD)</strong><span>Kiểm tra thông tin giao hàng trước khi xác nhận đơn.</span></div>
+                                <div><strong>Kiểm tra phương thức thanh toán đã chọn</strong><span>Kiểm tra thông tin giao hàng trước khi xác nhận đơn.</span></div>
                             </div>
                             <button type="submit" class="btn btn-primary" style="width:100%; padding: 14px;">
                                 <svg width="18" height="18"><use href="#icon-check"/></svg> Xác nhận đặt hàng

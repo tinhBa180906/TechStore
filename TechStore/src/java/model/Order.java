@@ -18,6 +18,7 @@ public class Order {
     private LocalDateTime dateCreated;
     private String orderStatus;
     private String paymentMethod;
+    private String paymentStatus;
     private String shippingName;
     private String shippingPhone;
     private String shippingAddress;
@@ -77,6 +78,10 @@ public class Order {
     public String getPaymentMethod() {
         return paymentMethod;
     }
+
+    public String getPaymentStatus() { return paymentStatus; }
+
+    public void setPaymentStatus(String paymentStatus) { this.paymentStatus = paymentStatus; }
 
     public void setPaymentMethod(String paymentMethod) {
         this.paymentMethod = paymentMethod;

@@ -53,6 +53,13 @@ public class OrderDAO extends DBContext implements AutoCloseable {
 
     public int checkout(int customerId, Map<Integer, CartItem> cart, String name,
             String phone, String address) throws SQLException {
+        return checkout(customerId, cart, name, phone, address, "COD");
+    }
+
+    public int checkout(int customerId, Map<Integer, CartItem> cart, String name,
+            String phone, String address, String paymentMethod) throws SQLException {
+        if (!"COD".equals(paymentMethod) && !"QR".equals(paymentMethod))
+            throw new IllegalArgumentException("Phương thức thanh toán không hợp lệ.");
         if (customerId < 1 || cart == null || cart.isEmpty())
             throw new IllegalArgumentException("Giỏ hàng trống hoặc tài khoản không hợp lệ.");
         if (name == null || name.trim().length() < 2 || name.length() > 100
@@ -64,7 +71,7 @@ public class OrderDAO extends DBContext implements AutoCloseable {
         try {
             Map<Integer, BigDecimal> prices = new HashMap<>();
             // Roll back the whole order if any product has insufficient stock.
-            for (Map.Entry<Integer, CartItem> entry : cart.entrySet()) {
+            for (Map.Entry<Integer, CartItem> entry : new TreeMap<>(cart).entrySet()) {
                 int quantity = entry.getValue().getQuantity();
                 if (quantity < 1) throw new IllegalArgumentException("Số lượng phải lớn hơn 0.");
                 try (PreparedStatement s = connection.prepareStatement(
@@ -77,12 +84,18 @@ public class OrderDAO extends DBContext implements AutoCloseable {
                     prices.put(entry.getKey(), product.getPrice());
                 }
             }
+            if ("QR".equals(paymentMethod)) {
+                BigDecimal total = BigDecimal.ZERO;
+                for (Map.Entry<Integer, BigDecimal> price : prices.entrySet())
+                    total = total.add(price.getValue().multiply(BigDecimal.valueOf(cart.get(price.getKey()).getQuantity())));
+                util.VietQRUtil.amountVnd(total); // Reject unrepresentable amounts before inserting/committing.
+            }
             int orderId;
             try (PreparedStatement s = connection.prepareStatement(
-                    "INSERT INTO dbo.Invoice(CustomerID,OrderStatus,PaymentMethod,ShippingName,ShippingPhone,ShippingAddress) "
-                    + "VALUES (?,'PENDING','COD',?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
-                s.setInt(1, customerId); s.setNString(2, name.trim());
-                s.setString(3, phone); s.setNString(4, address.trim()); s.executeUpdate();
+                    "INSERT INTO dbo.Invoice(CustomerID,OrderStatus,PaymentMethod,ShippingName,ShippingPhone,ShippingAddress,PaymentStatus) "
+                    + "VALUES (?,'PENDING',?,?,?,?,'UNPAID')", Statement.RETURN_GENERATED_KEYS)) {
+                s.setInt(1, customerId); s.setString(2, paymentMethod); s.setNString(3, name.trim());
+                s.setString(4, phone); s.setNString(5, address.trim()); s.executeUpdate();
                 try (ResultSet r = s.getGeneratedKeys()) {
                     if (!r.next()) throw new SQLException("Missing invoice key.");
                     orderId = r.getInt(1);
@@ -107,8 +120,8 @@ public class OrderDAO extends DBContext implements AutoCloseable {
     }
 
     public List<Order> getOrders(Integer customerId) throws SQLException {
-        String sql = "SELECT * FROM dbo.vw_OrderTotals"
-                + (customerId == null ? "" : " WHERE CustomerID=?") + " ORDER BY InvoiceID DESC";
+        String sql = "SELECT v.*,i.PaymentStatus FROM dbo.vw_OrderTotals v JOIN dbo.Invoice i ON i.InvoiceID=v.InvoiceID"
+                + (customerId == null ? "" : " WHERE v.CustomerID=?") + " ORDER BY v.InvoiceID DESC";
         List<Order> orders = new ArrayList<>();
         try (PreparedStatement s = connection.prepareStatement(sql)) {
             if (customerId != null) s.setInt(1, customerId);
@@ -120,11 +133,28 @@ public class OrderDAO extends DBContext implements AutoCloseable {
         return orders;
     }
 
+    /** A null owner is only supplied by an already-authorized ADMIN controller. */
+    public Order getOrder(int id, Integer customerId) throws SQLException {
+        String sql = "SELECT v.*,i.PaymentStatus FROM dbo.vw_OrderTotals v JOIN dbo.Invoice i ON i.InvoiceID=v.InvoiceID"
+                + " WHERE v.InvoiceID=?" + (customerId == null ? "" : " AND v.CustomerID=?");
+        try (PreparedStatement s = connection.prepareStatement(sql)) {
+            s.setInt(1, id);
+            if (customerId != null) s.setInt(2, customerId);
+            try (ResultSet r = s.executeQuery()) {
+                if (!r.next()) return null;
+                Order order = readOrder(r);
+                order.setDetails(getDetails(id));
+                return order;
+            }
+        }
+    }
+
     private Order readOrder(ResultSet r) throws SQLException {
         Order o = new Order();
         o.setOrderId(r.getInt("InvoiceID")); o.setCustomerId(r.getInt("CustomerID"));
         o.setDateCreated(r.getTimestamp("DateCreated").toLocalDateTime());
         o.setOrderStatus(r.getString("OrderStatus")); o.setPaymentMethod(r.getString("PaymentMethod"));
+        o.setPaymentStatus(r.getString("PaymentStatus"));
         o.setShippingName(r.getString("ShippingName")); o.setShippingPhone(r.getString("ShippingPhone"));
         o.setShippingAddress(r.getString("ShippingAddress"));
         Timestamp completed = r.getTimestamp("CompletedAt");
@@ -156,6 +186,34 @@ public class OrderDAO extends DBContext implements AutoCloseable {
         }
     }
 
+    /** A customer declaration is only a request for verification, never payment proof. */
+    public void requestPaymentVerification(int id, int customerId) throws SQLException {
+        try (PreparedStatement s = connection.prepareStatement(
+                "UPDATE dbo.Invoice SET PaymentStatus='PENDING_VERIFY' WHERE InvoiceID=? AND CustomerID=?"
+                + " AND PaymentMethod='QR' AND PaymentStatus='UNPAID' AND OrderStatus<>'CANCELLED'")) {
+            s.setInt(1, id); s.setInt(2, customerId);
+            if (s.executeUpdate() == 1) return;
+        }
+        Order order = getOrder(id, customerId);
+        if (order == null || !"QR".equals(order.getPaymentMethod()) || "CANCELLED".equals(order.getOrderStatus()))
+            throw new IllegalArgumentException("Không thể yêu cầu xác minh cho đơn hàng này.");
+        // PENDING_VERIFY/PAID: idempotent retry; never downgrade or change stock.
+    }
+
+    /** ADMIN only controller entry point; payment does not change delivery status or stock. */
+    public boolean confirmPayment(int id) throws SQLException {
+        try (PreparedStatement s = connection.prepareStatement(
+                "UPDATE dbo.Invoice SET PaymentStatus='PAID' WHERE InvoiceID=? AND PaymentMethod='QR'"
+                + " AND PaymentStatus IN ('UNPAID','PENDING_VERIFY') AND OrderStatus<>'CANCELLED'")) {
+            s.setInt(1, id);
+            if (s.executeUpdate() == 1) return true;
+        }
+        Order order = getOrder(id, null);
+        if (order != null && "QR".equals(order.getPaymentMethod())
+                && "PAID".equals(order.getPaymentStatus()) && !"CANCELLED".equals(order.getOrderStatus())) return false;
+        throw new IllegalArgumentException("Không thể xác nhận thanh toán: đơn không tồn tại, đã hủy hoặc không phải VietQR.");
+    }
+
     /** PENDING -> CONFIRMED -> COMPLETED; cancellation is PENDING only. */
     public void updateStatus(int id, String status) throws SQLException {
         if ("CANCELLED".equals(status)) {
@@ -177,7 +235,8 @@ public class OrderDAO extends DBContext implements AutoCloseable {
         try (PreparedStatement s = connection.prepareStatement(
                 "UPDATE dbo.Invoice SET OrderStatus=?,CompletedAt="
                 + ("COMPLETED".equals(status) ? "SYSDATETIME()" : "NULL")
-                + " WHERE InvoiceID=? AND OrderStatus=?")) {
+                + " WHERE InvoiceID=? AND OrderStatus=?"
+                + ("COMPLETED".equals(status) ? " AND (PaymentMethod='COD' OR PaymentStatus='PAID')" : ""))) {
             s.setString(1, status); s.setInt(2, id); s.setString(3, previous);
             if (s.executeUpdate() != 1) throw new IllegalArgumentException("Đơn hàng đã thay đổi hoặc không thể chuyển trạng thái này.");
         }
