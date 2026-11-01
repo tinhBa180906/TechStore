@@ -81,6 +81,12 @@ public class Order {
 
     public String getPaymentStatus() { return paymentStatus; }
 
+    /** Internal sales invoice: delivery complete; a QR order must also be bank-confirmed. */
+    public boolean isInvoiceAvailable() {
+        return "COMPLETED".equals(orderStatus)
+                && ("COD".equals(paymentMethod) || ("QR".equals(paymentMethod) && "PAID".equals(paymentStatus)));
+    }
+
     public void setPaymentStatus(String paymentStatus) { this.paymentStatus = paymentStatus; }
 
     public void setPaymentMethod(String paymentMethod) {
