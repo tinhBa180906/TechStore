@@ -81,3 +81,89 @@
         }
     })();
 </script>
+
+<!-- KHUNG CHATBOT TECHSTORE -->
+<div id="tech-chat-widget">
+    <!-- Nút tròn bật/tắt chat -->
+    <button id="tech-chat-toggle" aria-label="Mở khung chat tư vấn" onclick="toggleTechChat()">
+        💬
+    </button>
+
+    <!-- Hộp thoại chat -->
+    <div id="tech-chat-box" style="display: none;">
+        <div class="tech-chat-header">
+            <div style="display:flex; align-items:center; gap:8px;">
+                <span style="font-size: 20px;">🤖</span>
+                <div>
+                    <strong>TechBot AI</strong>
+                    <div style="font-size: 11px; opacity: 0.85;">Trợ lý tư vấn TechStore</div>
+                </div>
+            </div>
+            <button onclick="toggleTechChat()" style="background:none; border:none; color:white; font-size:18px; cursor:pointer;">✕</button>
+        </div>
+
+        <div id="tech-chat-messages" class="tech-chat-body">
+            <div class="tech-msg tech-msg-bot">
+                Xin chào! Tôi là <strong>TechBot</strong>. Bạn cần tư vấn điện thoại, laptop hay phụ kiện công nghệ nào hôm nay?
+            </div>
+        </div>
+
+        <div class="tech-chat-footer">
+            <input type="text" id="tech-chat-input" placeholder="Hỏi TechBot điều gì đó..." onkeydown="if(event.key==='Enter') sendTechMessage()">
+            <button onclick="sendTechMessage()">Gửi</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleTechChat() {
+        const box = document.getElementById("tech-chat-box");
+        box.style.display = (box.style.display === "none" || box.style.display === "") ? "flex" : "none";
+        if (box.style.display === "flex") {
+            document.getElementById("tech-chat-input").focus();
+        }
+    }
+
+    async function sendTechMessage() {
+        const input = document.getElementById("tech-chat-input");
+        const messageContainer = document.getElementById("tech-chat-messages");
+        const query = input.value.trim();
+        if (!query) return;
+
+        // 1. Hiện tin nhắn của người dùng
+        const userDiv = document.createElement("div");
+        userDiv.className = "tech-msg tech-msg-user";
+        userDiv.textContent = query;
+        messageContainer.appendChild(userDiv);
+        input.value = "";
+        messageContainer.scrollTop = messageContainer.scrollHeight;
+
+        // 2. Hiện trạng thái đang gõ
+        const typingDiv = document.createElement("div");
+        typingDiv.className = "tech-msg tech-msg-bot";
+        typingDiv.id = "tech-typing-status";
+        typingDiv.textContent = "TechBot đang soạn câu trả lời...";
+        messageContainer.appendChild(typingDiv);
+        messageContainer.scrollTop = messageContainer.scrollHeight;
+
+        try {
+            // 3. Gửi lên ChatbotServlet
+            const res = await fetch("${pageContext.request.contextPath}/api/chat", {
+                method: "POST",
+                headers: { "Content-Type": "text/plain; charset=UTF-8" },
+                body: query
+            });
+            const data = await res.json();
+            typingDiv.remove();
+
+            // 4. Hiện câu trả lời của Bot
+            const botDiv = document.createElement("div");
+            botDiv.className = "tech-msg tech-msg-bot";
+            botDiv.innerHTML = data.reply.replace(/\n/g, "<br>");
+            messageContainer.appendChild(botDiv);
+        } catch (err) {
+            typingDiv.textContent = "Chưa kết nối được với Bot. Vui lòng thử lại sau!";
+        }
+        messageContainer.scrollTop = messageContainer.scrollHeight;
+    }
+</script>

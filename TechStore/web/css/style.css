@@ -1920,3 +1920,123 @@ input:disabled {
 .ts-action-btn:hover .ts-icon {
     stroke: #0757ce;
 }
+
+/* --- TECHSTORE AI CHATBOT WIDGET --- */
+#tech-chat-widget {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9999;
+    font-family: inherit;
+}
+
+#tech-chat-toggle {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #0066cc;
+    color: #ffffff;
+    border: none;
+    box-shadow: 0 4px 14px rgba(0, 102, 204, 0.4);
+    font-size: 24px;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#tech-chat-toggle:hover {
+    transform: scale(1.08);
+    background: #0052a3;
+}
+
+#tech-chat-box {
+    position: absolute;
+    bottom: 68px;
+    right: 0;
+    width: 350px;
+    height: 480px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid #e1e4e8;
+}
+
+.tech-chat-header {
+    background: #0066cc;
+    color: #ffffff;
+    padding: 14px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tech-chat-body {
+    flex: 1;
+    padding: 14px;
+    overflow-y: auto;
+    background: #f7f9fc;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.tech-msg {
+    max-width: 80%;
+    padding: 10px 14px;
+    font-size: 13.5px;
+    line-height: 1.45;
+    border-radius: 14px;
+    word-break: break-word;
+}
+
+.tech-msg-bot {
+    background: #ffffff;
+    color: #222;
+    border: 1px solid #e3e6ea;
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+}
+
+.tech-msg-user {
+    background: #0066cc;
+    color: #ffffff;
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+}
+
+.tech-chat-footer {
+    display: flex;
+    padding: 10px;
+    background: #ffffff;
+    border-top: 1px solid #eee;
+    gap: 8px;
+}
+
+.tech-chat-footer input {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    outline: none;
+    font-size: 13px;
+}
+
+.tech-chat-footer input:focus {
+    border-color: #0066cc;
+}
+
+.tech-chat-footer button {
+    background: #0066cc;
+    color: #fff;
+    border: none;
+    padding: 0 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+}
