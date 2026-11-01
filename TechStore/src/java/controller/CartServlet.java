@@ -42,7 +42,9 @@ public class CartServlet extends HttpServlet {
                     cart.remove(id);
                 } else if ("add".equals(action) || "update".equals(action)) {
                     int quantity = OrderSupport.positiveInt(req.getParameter("quantity"));
-                    if ("add".equals(action) && cart.containsKey(id)) {
+
+                    // Chỉ cộng dồn khi bấm "Thêm vào giỏ", còn nếu bấm "Mua ngay" thì lấy đúng số lượng khách chọn
+                    if ("add".equals(action) && !"true".equals(buyNow) && cart.containsKey(id)) {
                         quantity = Math.addExact(quantity, cart.get(id).getQuantity());
                     }
                     if ("update".equals(action) && !cart.containsKey(id)) {
