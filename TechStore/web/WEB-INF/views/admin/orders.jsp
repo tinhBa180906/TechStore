@@ -233,6 +233,9 @@
                 <div class="order-total">
                     <span>Tổng cộng:</span> <fmt:formatNumber value="${order.totalAmount}" type="number"/> ₫
                 </div>
+                <c:if test="${order.invoiceAvailable}">
+                    <a class="btn btn-outline" href="${pageContext.request.contextPath}/invoice?orderId=${order.orderId}">Xem hóa đơn <span aria-hidden="true">↗</span></a>
+                </c:if>
 
                 <!-- Status Update Form -->
                 <c:if test="${order.orderStatus == 'PENDING' or order.orderStatus == 'CONFIRMED'}">

@@ -231,6 +231,9 @@
                 <div class="order-total">
                     <span>Tổng cộng:</span> <fmt:formatNumber value="${order.totalAmount}" type="number"/> ₫
                 </div>
+                <c:if test="${order.invoiceAvailable}">
+                    <a class="btn btn-outline" href="${pageContext.request.contextPath}/invoice?orderId=${order.orderId}">Xem hóa đơn <span aria-hidden="true">↗</span></a>
+                </c:if>
                 <c:if test="${order.paymentMethod == 'QR' and (order.paymentStatus == 'PAID' or order.orderStatus == 'CANCELLED')}">
                     <a class="btn" href="${pageContext.request.contextPath}/payment-qr?orderId=${order.orderId}">Chi tiết thanh toán</a>
                 </c:if>
